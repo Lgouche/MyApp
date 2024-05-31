@@ -1,7 +1,32 @@
 import React, { useState } from 'react'
-import { Text,TextInput, StyleSheet, View, Image,TouchableOpacity } from 'react-native'
+import { Text,TextInput, StyleSheet, View, Image,TouchableOpacity,Alert } from 'react-native'
+//Impotaciones de FIREBSE
+import appFirebase from '../credenciales';
+import { getAuth, createUserWithEmailAndPassword,signInWithEmailAndPassword } from "firebase/auth";
 
-export default function Login() {
+const auth = getAuth(appFirebase);
+//Tenemos que pasarle las props
+export default function Login(props) {
+
+
+
+    //Aqui tenemos la logica que nos permite conectar con firebase
+    //Creamos la variable estado
+    const [email,setEmail]= useState();
+    const [password,setPassword]= useState();
+    //La mas importante
+    const logueo = async()=>{
+        try {
+            await signInWithEmailAndPassword(auth,email,password);
+            Alert.alert('Iniciando Sesion', 'Accediendo...');
+            //Con esto pasamos el cambio de pantalla
+            props.navigation.navigate('Home');
+        } catch (error) {
+            console.log(error);
+            Alert.alert('Error','El Usuario o la contraseña son incorrectos');
+            
+        }
+    }
 
     return (
         <View style={styles.padre}>
@@ -10,13 +35,13 @@ export default function Login() {
             </View>
             <View style={styles.tarjeta}>
                 <View style={styles.cajaTexto}>
-                    <TextInput placeholder='Usuario' style={{paddingHorizontal:15}}/>
+                    <TextInput placeholder='Usuario' style={{paddingHorizontal:15}} onChangeText={(text)=>setEmail(text)}/>
                 </View>
                 <View style={styles.cajaTexto}>
-                    <TextInput placeholder='Constraseña' style={{paddingHorizontal:15}}/>
+                    <TextInput placeholder='Constraseña' style={{paddingHorizontal:15}} secureTextEntry={true} onChangeText={(text)=>setPassword(text)}/>
                 </View>
                 <View style={styles.padreBoton}>
-                    <TouchableOpacity style={styles.cajaBoton}>
+                    <TouchableOpacity style={styles.cajaBoton} onPress={logueo}>
                         <Text style={styles.textoBoton}>Ingresar</Text>
                     </TouchableOpacity>
                 </View>
