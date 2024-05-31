@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import Login from './screens/Login';
 import Home from './screens/Home';
+import Registro from './screens/Registro';
 
 
 export default function App() {
@@ -16,10 +17,12 @@ export default function App() {
       <Stack.Navigator>
         <Stack.Screen name="Login" component={Login} 
           options={{
-            title: 'Inicio',
-            headerTintColor:'white',
-            headerTitleAlign:'center',
-            headerStyle: {backgroundColor:'#525FE1'},
+            headerShown:false
+          }}
+        />
+        <Stack.Screen name="Registro" component={Registro} 
+          options={{
+            headerShown:false
           }}
         />
         <Stack.Screen name="Home" component={Home}
@@ -27,7 +30,7 @@ export default function App() {
           title: 'Home',
           headerTintColor:'white',
           headerTitleAlign:'center',
-          headerStyle: {backgroundColor:'#525FE1'},
+          headerStyle: {backgroundColor:'#D57C48'},
         }} />
 
       </Stack.Navigator>

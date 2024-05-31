@@ -2,32 +2,40 @@ import React, { useState } from 'react';
 import { Text, TextInput, StyleSheet, View, Image, TouchableOpacity, Alert, Button } from 'react-native';
 // Importaciones de FIREBASE
 import appFirebase from '../credenciales';
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword,createUserWithEmailAndPassword } from "firebase/auth";
 // Icono
 import { AntDesign } from '@expo/vector-icons';
 
 const auth = getAuth(appFirebase);
 
-export default function Login(props) {
+export default function Registro(props) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [check, setCheck] = useState('');
     const [vpass, setVpass] = useState(true);
     const [showLoading, setShowLoading] = useState(false);
 
-    const logueo = async () => {
+    const registrarse = async () => {
         try {
-            setShowLoading(true);
-            await signInWithEmailAndPassword(auth, email, password);
-            props.navigation.navigate('Home');
+            if (password!== check) {
+                Alert.alert('Error', 'Las contraseñas no coinciden');
+                return;
+            }else{
+                setShowLoading(true);
+            await createUserWithEmailAndPassword(auth, email, password);
+            props.navigation.navigate('Login');
+            }
+            
         } catch (error) {
             console.log(error);
-            Alert.alert('Error', 'El Usuario o la contraseña son incorrectos');
+            Alert.alert('Error', 'Introduce un usuario y una contraseña valida'+error);
         } finally {
             setTimeout(() => {
                 setShowLoading(false);
             }, 3000);
         }
     };
+    
     
 
     return (
@@ -36,9 +44,11 @@ export default function Login(props) {
                 <Image source={require('../assets/Taco.png')} style={styles.profile} />
             </View>
             <View style={styles.tarjeta}>
+                <Text style={styles.text}>Introduce un usuario</Text>
                 <View style={styles.cajaTexto}>
                     <TextInput placeholder='Usuario' style={styles.input} onChangeText={(text) => setEmail(text)} />
                 </View>
+                <Text style={styles.text}>Introduce una contraseña</Text>
                 <View style={styles.cajaTexto}>
                     <TextInput placeholder='Contraseña' style={styles.input} secureTextEntry={vpass} onChangeText={(text) => setPassword(text)} />
                     <TouchableOpacity
@@ -46,21 +56,31 @@ export default function Login(props) {
                         onPressOut={() => setVpass(true)}
                         style={styles.eyeButton}
                     >
-                        <AntDesign name="eye" size={24} color="black" />
+                        <AntDesign name="eye" size={20} color="black" />
                     </TouchableOpacity>
                 </View>
+                
+                <View style={styles.cajaTexto}>
+                    <TextInput placeholder='Repite la Contraseña' style={styles.input} secureTextEntry={vpass} onChangeText={(text) => setCheck(text)} />
+                    <TouchableOpacity
+                        onPressIn={() => setVpass(false)}
+                        onPressOut={() => setVpass(true)}
+                        style={styles.eyeButton}
+                    >
+                        <AntDesign name="eye" size={20} color="black" />
+                    </TouchableOpacity>
+                </View>
+                <Text style={{fontSize:10,color:'white'}}>La contraseña tiene que tener minimo 6 caracteres*</Text>
                 <View style={styles.padreBoton}>
-                    <TouchableOpacity style={styles.boton} onPress={logueo}>
-                        <Text style={styles.textoBotonInicio}>Ingresar</Text>
+                    <TouchableOpacity style={styles.boton} onPress={registrarse}>
+                        <Text style={styles.textoBotonInicio}>Regitrarse</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={()=>{props.navigation.navigate('Registro')}}> 
-                        <Text style={styles.textoBotonRegitro}>Registrarse</Text>
-                    </TouchableOpacity>
+                    
                 </View>
             </View>
             {showLoading && (
                 <View style={styles.loading}>
-                    <Text>Iniciando sesión...</Text>
+                    <Text>Registrando al Usuario</Text>
                 </View>
             )}
         </View>
@@ -97,7 +117,7 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     cajaTexto: {
-        paddingVertical: 20,
+        paddingVertical: 5,
         backgroundColor: 'rgba(204, 204, 204, 0.6)', // Fondo de caja de texto con transparencia
         borderRadius: 30,
         marginVertical: 10,
@@ -105,7 +125,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     input: {
-        paddingHorizontal: 15,
+        paddingHorizontal: 10,
         flex: 1,
     },
     eyeButton: {
@@ -140,12 +160,11 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
         zIndex: 1000,
     },
-    textoBotonRegitro:{
+    text:{
         color: 'white',
-        fontSize: 20,
+        fontSize: 22,
         fontWeight: 'bold',
-        textAlign: 'center',
+        textAlign: 'left',
         marginTop: 10,
-        textDecorationLine: 'underline'
     }
 });
