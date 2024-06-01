@@ -1,14 +1,28 @@
-import React, { useState } from 'react'
-import { Text, StyleSheet, View } from 'react-native'
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import 'react-native-gesture-handler';
 
-export default function Home() {
 
-    return(
-      <View>
-    <Text> textInComponent </Text>
-      </View >
-    );
+export default function App() {
+
   
+
+
+
+
+
+  return (
+    <View style={styles.container}>
+      <Text>Hello World</Text>
+    </View>
+  );
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});

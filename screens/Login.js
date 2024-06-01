@@ -18,7 +18,7 @@ export default function Login(props) {
         try {
             setShowLoading(true);
             await signInWithEmailAndPassword(auth, email, password);
-            props.navigation.navigate('Home');
+            props.navigation.replace('Home');
         } catch (error) {
             console.log(error);
             Alert.alert('Error', 'El Usuario o la contraseña son incorrectos');
@@ -55,6 +55,9 @@ export default function Login(props) {
                     </TouchableOpacity>
                     <TouchableOpacity onPress={()=>{props.navigation.navigate('Registro')}}> 
                         <Text style={styles.textoBotonRegitro}>Registrarse</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={()=>{props.navigation.replace('Home')}}> 
+                        <Text style={styles.textoBotonRegitro}>Desarrollo</Text>
                     </TouchableOpacity>
                 </View>
             </View>
