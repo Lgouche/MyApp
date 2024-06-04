@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Text, TextInput, StyleSheet, View, Image, TouchableOpacity, Alert, Button } from 'react-native';
 // Importaciones de FIREBASE
-import appFirebase from '../credenciales';
+import {appFirebase} from '../credenciales';
 import { getAuth, signInWithEmailAndPassword,createUserWithEmailAndPassword } from "firebase/auth";
 // Icono
 import { AntDesign } from '@expo/vector-icons';

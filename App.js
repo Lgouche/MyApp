@@ -1,4 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
+import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import 'react-native-gesture-handler';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -11,11 +12,14 @@ import Clasicos from './screens/Clasicos';
 import Golden from './screens/Golden';
 import Especiales from './screens/Especiales';
 import Bebidas from './screens/Bebidas';
+import Resumenes from './screens/Resumenes';
 
 export default function App() {
   const Stack = createStackNavigator();
 
   function MyStack() {
+    const [resumenes, setResumenes] = React.useState([]);
+
     return (
       <Stack.Navigator>
         <Stack.Screen
@@ -30,7 +34,6 @@ export default function App() {
         />
         <Stack.Screen
           name="Home"
-          component={Home}
           options={{
             title: 'Home',
             headerTintColor: 'white',
@@ -39,53 +42,75 @@ export default function App() {
             headerLeft: () => null,  // Elimina el botón de volver
             gestureEnabled: false,   // Deshabilita el gesto de volver
           }}
-        />
+        >
+          {props => <Home {...props} resumenes={resumenes} />}
+        </Stack.Screen>
         <Stack.Screen
           name="Al Gusto"
-          component={AlGusto}
           options={{
             title: 'Al Gusto',
             headerTintColor: 'white',
             headerTitleAlign: 'center',
             headerStyle: { backgroundColor: '#D57C48' },
           }}
-        /><Stack.Screen
+        >
+          {props => <AlGusto {...props} resumenes={resumenes} setResumenes={setResumenes} />}
+        </Stack.Screen>
+        <Stack.Screen
           name="Clasicos"
-          component={Clasicos}
           options={{
             title: 'Clasicos',
             headerTintColor: 'white',
             headerTitleAlign: 'center',
             headerStyle: { backgroundColor: '#D57C48' }
           }}
-        /><Stack.Screen
+        >
+          {props => <Clasicos {...props} resumenes={resumenes} setResumenes={setResumenes} />}
+        </Stack.Screen>
+        <Stack.Screen
           name="Golden"
-          component={Golden}
           options={{
             title: 'Golden',
             headerTintColor: 'white',
             headerTitleAlign: 'center',
             headerStyle: { backgroundColor: '#D57C48' }
           }}
-        /><Stack.Screen
+        >
+          {props => <Golden {...props} resumenes={resumenes} setResumenes={setResumenes} />}
+        </Stack.Screen>
+        <Stack.Screen
           name="Especiales"
-          component={Especiales}
           options={{
             title: 'Especiales',
             headerTintColor: 'white',
             headerTitleAlign: 'center',
             headerStyle: { backgroundColor: '#D57C48' }
           }}
-        /><Stack.Screen
+        >
+          {props => <Especiales {...props} resumenes={resumenes} setResumenes={setResumenes} />}
+        </Stack.Screen>
+        <Stack.Screen
           name="Bebidas"
-          component={Bebidas}
           options={{
             title: 'Bebidas',
             headerTintColor: 'white',
             headerTitleAlign: 'center',
             headerStyle: { backgroundColor: '#D57C48' }
           }}
-        />
+        >
+          {props => <Bebidas {...props} resumenes={resumenes} setResumenes={setResumenes} />}
+        </Stack.Screen>
+        <Stack.Screen
+          name="Resumenes"
+          options={{
+            title: 'Resúmenes',
+            headerTintColor: 'white',
+            headerTitleAlign: 'center',
+            headerStyle: { backgroundColor: '#D57C48' }
+          }}
+        >
+          {props => <Resumenes {...props} resumenes={resumenes} setResumenes={setResumenes} />}
+        </Stack.Screen>
       </Stack.Navigator>
     );
   }

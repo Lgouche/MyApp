@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Text, TextInput, StyleSheet, View, Image, TouchableOpacity, Alert, Button } from 'react-native';
 // Importaciones de FIREBASE
-import appFirebase from '../credenciales';
+import {appFirebase} from '../credenciales';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 // Icono
 import { AntDesign } from '@expo/vector-icons';
@@ -55,9 +55,6 @@ export default function Login(props) {
                     </TouchableOpacity>
                     <TouchableOpacity onPress={()=>{props.navigation.navigate('Registro')}}> 
                         <Text style={styles.textoBotonRegitro}>Registrarse</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={()=>{props.navigation.replace('Home')}}> 
-                        <Text style={styles.textoBotonRegitro}>Desarrollo</Text>
                     </TouchableOpacity>
                 </View>
             </View>
