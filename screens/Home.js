@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons, FontAwesome5, FontAwesome6, Entypo } from '@expo/vector-icons';
 import 'react-native-gesture-handler';
+import styles from "../src/styles";
 
 export default function Home(props) {
   return (
@@ -39,49 +40,4 @@ export default function Home(props) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#D57C48',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  button: {
-    backgroundColor: '#895232',
-    margin: 10,
-    padding: 20,
-    width: '85%',
-    borderRadius: 25,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.8,
-    shadowRadius: 5,
-    elevation: 7,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'relative',
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginHorizontal: 10,
-  },
-  badge: {
-    backgroundColor: 'red',
-    borderRadius: 10,
-    width: 30,
-    height: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'absolute',
-    right: 20,
-    top: 10,
-  },
-  badgeText: {
-    color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-});
+
