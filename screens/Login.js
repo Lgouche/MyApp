@@ -57,6 +57,9 @@ export default function Login(props) {
                     <TouchableOpacity onPress={()=>{props.navigation.navigate('Registro')}}> 
                         <Text style={styles.textoBotonRegitro}>Registrarse</Text>
                     </TouchableOpacity>
+                    <TouchableOpacity onPress={()=>{props.navigation.navigate('Home')}}>
+                        <Text style={styles.textoBotonRegitro}>Desarrollo</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
             {showLoading && (

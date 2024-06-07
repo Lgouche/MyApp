@@ -13,6 +13,11 @@ import Golden from './screens/Golden';
 import Especiales from './screens/Especiales';
 import Bebidas from './screens/Bebidas';
 import Resumenes from './screens/Resumenes';
+import Graten from './screens/Graten';
+import Vegetarianos from './screens/Vegetarianos';
+import Postres from './screens/Postres';
+import MenuInfantil from './screens/MenuInfantil';
+import Entrantes from './screens/Entrantes';
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -110,6 +115,61 @@ export default function App() {
           }}
         >
           {props => <Resumenes {...props} resumenes={resumenes} setResumenes={setResumenes} />}
+        </Stack.Screen>
+        <Stack.Screen
+          name="Graten"
+          options={{
+            title: 'Graten',
+            headerTintColor: 'white',
+            headerTitleAlign: 'center',
+            headerStyle: { backgroundColor: '#D57C48' }
+          }}
+        >
+          {props => <Graten {...props} resumenes={resumenes} setResumenes={setResumenes} />}
+        </Stack.Screen>
+        <Stack.Screen
+          name="Vegetarianos"
+          options={{
+            title: 'Vegetarianos',
+            headerTintColor: 'white',
+            headerTitleAlign: 'center',
+            headerStyle: { backgroundColor: '#D57C48' }
+          }}
+        >
+          {props => <Vegetarianos {...props} resumenes={resumenes} setResumenes={setResumenes} />}
+        </Stack.Screen>
+        <Stack.Screen
+          name="Postres"
+          options={{
+            title: 'Postres',
+            headerTintColor: 'white',
+            headerTitleAlign: 'center',
+            headerStyle: { backgroundColor: '#D57C48' }
+          }}
+        >
+          {props => <Postres {...props} resumenes={resumenes} setResumenes={setResumenes} />}
+        </Stack.Screen>
+        <Stack.Screen
+          name="MenuInfantil"
+          options={{
+            title: 'Menu Infantil',
+            headerTintColor: 'white',
+            headerTitleAlign: 'center',
+            headerStyle: { backgroundColor: '#D57C48' }
+          }}
+        >
+          {props => <MenuInfantil {...props} resumenes={resumenes} setResumenes={setResumenes} />}
+        </Stack.Screen>
+        <Stack.Screen
+          name="Entrantes"
+          options={{
+            title: 'Menu Infantil',
+            headerTintColor: 'white',
+            headerTitleAlign: 'center',
+            headerStyle: { backgroundColor: '#D57C48' }
+          }}
+        >
+          {props => <Entrantes {...props} resumenes={resumenes} setResumenes={setResumenes} />}
         </Stack.Screen>
       </Stack.Navigator>
     );

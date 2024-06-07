@@ -44,27 +44,35 @@ const menuData = {
       "Pili Pili",
       "Americana",
       "Salsa Kebab"
-    ]
+    ],
+    extras: [
+      { nombre: "Gouda", precio: "0.50€" },
+      { nombre: "Cheddar", precio: "0.50€" },
+      { nombre: "Mozarella", precio: "0.50€" },
+      { nombre: "Vaca que ríe", precio: "0.50€" },
+      { nombre: "Queso de cabra", precio: "0.50€" },
+      { nombre: "Aceitunas verdes", precio: "0.50€" },
+      { nombre: "Aceitunas negras", precio: "0.50€" },
+      { nombre: "Pimientos", precio: "0.50€" },
+      { nombre: "Aros de cebolla", precio: "0.50€" },
+      { nombre: "Tiras de bacon", precio: "0.70€" },
+      { nombre: "Champiñones", precio: "0.70€" }
+    ],
+    gratinar: {
+      M: { precio: "1€" },
+      L: { precio: "1€" },
+      XL: { precio: "1.50€" },
+      XXL: { precio: "1.50€" }
+    },
+    gratinadoProductos:{
+      becon:{precio:"1€"},
+      quesoCabra:{precio:"1€"},
+      aciutunasVerdes:{precio:"1€"},
+      aceitunasNegras:{precio:"1€"},
+      pimientos:{precio:"1€"}
+    }
   },
-  extras: [
-    { nombre: "Gouda", precio: "0.50€" },
-    { nombre: "Cheddar", precio: "0.50€" },
-    { nombre: "Mozarella", precio: "0.50€" },
-    { nombre: "Vaca que ríe", precio: "0.50€" },
-    { nombre: "Queso de cabra", precio: "0.50€" },
-    { nombre: "Aceitunas verdes", precio: "0.50€" },
-    { nombre: "Aceitunas negras", precio: "0.50€" },
-    { nombre: "Pimientos", precio: "0.50€" },
-    { nombre: "Aros de cebolla", precio: "0.50€" },
-    { nombre: "Tiras de bacon", precio: "0.70€" },
-    { nombre: "Champiñones", precio: "0.70€" }
-  ],
-  gratinar: {
-    M: { precio: "1€" },
-    L: { precio: "1€" },
-    XL: { precio: "1.50€" },
-    XXL: { precio: "1.50€" }
-  },
+  
   menus: {
     normal: {
       precio: "2€",
@@ -123,6 +131,22 @@ const menuData = {
       precio: "11.50€",
       descripcion: "San Jacobo, tenders, kebab de pollo, salsa argelina, tiras de bacon y mozzarella"
     }
+  },
+  menuInfantil:{
+    opcion1:{
+      miniTaco:{precio:"0€"},
+      nuggets:{precio:"0€"}
+    },
+    opcion2:{
+      postre:{precio:"0€"},
+      bebida:{precio:"0€"}
+    }
+  },
+  postres:{
+    tartaDeQueso:{precio:"2€"},
+    tartaDeChocolate:{precio:"2€"},
+    polim:{precio:"2€"},
+    tobletone:{precio:"2€"},
   }
 };
 

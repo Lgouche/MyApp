@@ -1,11 +1,15 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity , ScrollView} from 'react-native';
 import { MaterialCommunityIcons, FontAwesome5, FontAwesome6, Entypo } from '@expo/vector-icons';
 import 'react-native-gesture-handler';
 import styles from "../src/styles";
+import { StackRouter } from '@react-navigation/native';
 
 export default function Home(props) {
   return (
+    <ScrollView>
+
+    
     <View style={styles.container}>
       <TouchableOpacity style={styles.button} onPress={() => { props.navigation.navigate('Al Gusto'); }}>
         <MaterialCommunityIcons name="taco" size={24} color="white" />
@@ -36,7 +40,28 @@ export default function Home(props) {
           </View>
         )}
       </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={() => { props.navigation.navigate('Graten'); }}>
+        
+        <Text style={styles.buttonText}>Graten</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={() => { props.navigation.navigate('Vegetarianos'); }}>
+        
+        <Text style={styles.buttonText}>Vegetarianos</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={() => { props.navigation.navigate('MenuInfantil'); }}>
+        
+        <Text style={styles.buttonText}>Menu Infantil</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={() => { props.navigation.navigate('Entrantes'); }}>
+        
+        <Text style={styles.buttonText}>Entrantes</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={() => { props.navigation.navigate('Postres'); }}>
+        
+        <Text style={styles.buttonText}>Postres</Text>
+      </TouchableOpacity>
     </View>
+    </ScrollView>
   );
 }
 

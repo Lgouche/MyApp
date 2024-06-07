@@ -188,6 +188,7 @@ export default function Resumenes({ resumenes = [], setResumenes }) {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
+    overflow: "hidden",
     backgroundColor: '#D57C48',
     alignItems: 'center',
     justifyContent: 'center',
