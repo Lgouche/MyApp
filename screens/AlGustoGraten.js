@@ -2,16 +2,11 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Modal } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import menuData from '../menuData';
-import styles from "../src/styles";
 
-export default function AlGusto(props) {
-  const [expandedSection, setExpandedSection] = useState('tallas');
-  const [selectedTalla, setSelectedTalla] = useState(null);
-  const [selectedCarnes, setSelectedCarnes] = useState([]);
-  const [selectedBase, setSelectedBase] = useState(null);
-  const [selectedSalsas, setSelectedSalsas] = useState([]);
+export default function AlGustoGraten({ navigation, resumenes, setResumenes }) {
+  const [expandedSection, setExpandedSection] = useState('carne');
+  const [selectedCarne, setSelectedCarne] = useState(null);
   const [selectedExtra, setSelectedExtra] = useState(null);
-  const [selectedGratin, setSelectedGratin] = useState(null);
   const [isSummary, setIsSummary] = useState(false);
   const [isMenu, setIsMenu] = useState(false);
   const [selectedMenuSize, setSelectedMenuSize] = useState(null);
@@ -19,43 +14,12 @@ export default function AlGusto(props) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isExtraQuestionVisible, setIsExtraQuestionVisible] = useState(false);
   const [isExtraModalVisible, setIsExtraModalVisible] = useState(false);
-  const [isGratinQuestionVisible, setIsGratinQuestionVisible] = useState(false);
-  const [isGratinModalVisible, setIsGratinModalVisible] = useState(false);
+  const [isMenuQuestionVisible, setIsMenuQuestionVisible] = useState(false);
   const [isWarningModalVisible, setIsWarningModalVisible] = useState(false);
 
-  const handleTallaSelect = (nombre) => {
-    setSelectedTalla(nombre);
-    setExpandedSection('carnes');
-  };
-
-  const handleCarnesSelect = (carne) => {
-    const { carnes: maxCarnes } = menuData.alGusto.tallas[selectedTalla];
-    const updatedCarnes = [...selectedCarnes, carne];
-
-    if (updatedCarnes.length >= maxCarnes) {
-      setSelectedCarnes(updatedCarnes);
-      setExpandedSection('bases');
-    } else {
-      setSelectedCarnes(updatedCarnes);
-    }
-  };
-
-  const handleBaseSelect = (nombre) => {
-    setSelectedBase(nombre);
-    setExpandedSection('salsas');
-  };
-
-  const handleSalsaSelect = (salsa) => {
-    let updatedSalsas = [...selectedSalsas];
-    if (updatedSalsas.includes(salsa)) {
-      updatedSalsas = updatedSalsas.filter(s => s !== salsa);
-    } else if (updatedSalsas.length < 2) {
-      updatedSalsas.push(salsa);
-    }
-    setSelectedSalsas(updatedSalsas);
-    if (updatedSalsas.length === 2) {
-      setIsExtraQuestionVisible(true);
-    }
+  const handleCarneSelect = (carne) => {
+    setSelectedCarne(carne);
+    setIsExtraQuestionVisible(true);
   };
 
   const handleExtraOptionSelect = (option) => {
@@ -63,38 +27,22 @@ export default function AlGusto(props) {
     if (option === 'yes') {
       setIsExtraModalVisible(true);
     } else {
-      setIsGratinQuestionVisible(true);
+      setIsMenuQuestionVisible(true);
     }
   };
 
   const handleExtraSelect = (extra) => {
     setSelectedExtra(extra);
     setIsExtraModalVisible(false);
-    setIsGratinQuestionVisible(true);
+    setIsMenuQuestionVisible(true);
   };
 
-  const handleGratinOptionSelect = (option) => {
-    setIsGratinQuestionVisible(false);
+  const handleMenuOptionSelect = (option) => {
+    setIsMenuQuestionVisible(false);
     if (option === 'yes') {
-      setIsGratinModalVisible(true);
-    } else {
-      setExpandedSection('menu');
-    }
-  };
-
-  const handleGratinSelect = (gratin) => {
-    setSelectedGratin(gratin);
-    setIsGratinModalVisible(false);
-    setExpandedSection('menu');
-  };
-
-  const handleMenuToggle = () => {
-    setIsMenu(!isMenu);
-    if (isMenu) {
-      setSelectedMenuSize(null);
-      setSelectedBebida(null);
-    } else {
       setIsModalVisible(true);
+    } else {
+      setIsSummary(true);
     }
   };
 
@@ -121,23 +69,16 @@ export default function AlGusto(props) {
   };
 
   const calculateTotalPrice = () => {
-    const tallaPrice = parseFloat(menuData.alGusto.tallas[selectedTalla].precio.replace('€', ''));
-    const basePrice = selectedBase && menuData.alGusto.bases[selectedBase].precio_extra ? parseFloat(menuData.alGusto.bases[selectedBase].precio_extra.replace('€', '')) : 0;
-    const menuPrice = isMenu ? parseFloat(menuData.menus[selectedMenuSize].precio.replace('€', '')) : 0;
     const extraPrice = selectedExtra ? parseFloat(selectedExtra.precio.replace('€', '')) : 0;
-    const gratinPrice = selectedGratin ? parseFloat(menuData.alGusto.gratinar[selectedTalla].precio.replace('€', '')) : 0;
-    return tallaPrice + basePrice + menuPrice + extraPrice + gratinPrice;
+    const menuPrice = isMenu ? parseFloat(menuData.menus[selectedMenuSize].precio.replace('€', '')) : 0;
+    return extraPrice + menuPrice;
   };
 
   const handleAccept = () => {
     const nuevoResumen = {
-      Tipo: 'Al Gusto',
-      Talla: selectedTalla,
-      Carnes: selectedCarnes,
-      Base: selectedBase,
-      Salsas: selectedSalsas,
+      Tipo: 'Al Gusto Graten',
+      Carne: selectedCarne,
       Extra: selectedExtra ? selectedExtra.nombre : null,
-      Gratin: selectedGratin ? selectedGratin.nombre : null,
       Menu: isMenu ? {
         Tamaño: selectedMenuSize,
         Bebida: selectedBebida,
@@ -145,16 +86,11 @@ export default function AlGusto(props) {
       Precio: calculateTotalPrice(),
     };
 
-    props.setResumenes([...props.resumenes, nuevoResumen]);
-    props.navigation.navigate('Home');
+    setResumenes([...resumenes, nuevoResumen]);
+    navigation.navigate('Home');
 
-    setExpandedSection('tallas');
-    setSelectedTalla(null);
-    setSelectedCarnes([]);
-    setSelectedBase(null);
-    setSelectedSalsas([]);
+    setSelectedCarne(null);
     setSelectedExtra(null);
-    setSelectedGratin(null);
     setIsMenu(false);
     setSelectedMenuSize(null);
     setSelectedBebida(null);
@@ -162,13 +98,8 @@ export default function AlGusto(props) {
   };
 
   const handleCancel = () => {
-    setExpandedSection('tallas');
-    setSelectedTalla(null);
-    setSelectedCarnes([]);
-    setSelectedBase(null);
-    setSelectedSalsas([]);
+    setSelectedCarne(null);
     setSelectedExtra(null);
-    setSelectedGratin(null);
     setIsMenu(false);
     setSelectedMenuSize(null);
     setSelectedBebida(null);
@@ -243,7 +174,7 @@ export default function AlGusto(props) {
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <Text style={styles.sectionTitle}>Selecciona un Extra:</Text>
-            {menuData.alGusto.extras.map((extra, index) => (
+            {menuData.gratenAlGusto.extras.map((extra, index) => (
               <TouchableOpacity
                 key={index}
                 style={[styles.button, selectedExtra === extra && styles.selectedButton]}
@@ -260,44 +191,19 @@ export default function AlGusto(props) {
       </Modal>
 
       <Modal
-        visible={isGratinQuestionVisible}
+        visible={isMenuQuestionVisible}
         animationType="slide"
         transparent={true}
-        onRequestClose={() => setIsGratinQuestionVisible(false)}
+        onRequestClose={() => setIsMenuQuestionVisible(false)}
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <Text style={styles.sectionTitle}>¿Deseas gratinar tu taco?</Text>
-            <TouchableOpacity style={[styles.button, styles.acceptButton]} onPress={() => handleGratinOptionSelect('yes')}>
+            <Text style={styles.sectionTitle}>¿Deseas añadir un menú?</Text>
+            <TouchableOpacity style={[styles.button, styles.acceptButton]} onPress={() => handleMenuOptionSelect('yes')}>
               <Text style={styles.buttonText}>Sí</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={() => handleGratinOptionSelect('no')}>
+            <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={() => handleMenuOptionSelect('no')}>
               <Text style={styles.buttonText}>No</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
-
-      <Modal
-        visible={isGratinModalVisible}
-        animationType="slide"
-        transparent={true}
-        onRequestClose={() => setIsGratinModalVisible(false)}
-      >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.sectionTitle}>Selecciona un Gratinado:</Text>
-            {Object.entries(menuData.alGusto.gratinadoProductos).map(([nombre, gratin], index) => (
-              <TouchableOpacity
-                key={index}
-                style={[styles.button, selectedGratin && selectedGratin.nombre === nombre && styles.selectedButton]}
-                onPress={() => handleGratinSelect({ nombre, ...gratin })}
-              >
-                <Text style={styles.buttonText}>{`${nombre.charAt(0).toUpperCase() + nombre.slice(1)} - Precio: ${gratin.precio}`}</Text>
-              </TouchableOpacity>
-            ))}
-            <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={() => setIsGratinModalVisible(false)}>
-              <Text style={styles.buttonText}>Cancelar</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -322,101 +228,26 @@ export default function AlGusto(props) {
 
       {!isSummary ? (
         <>
-          {expandedSection === 'tallas' && (
+          {expandedSection === 'carne' && (
             <>
-              <Text style={styles.sectionTitle}>Selecciona una Talla:</Text>
-              {Object.entries(menuData.alGusto.tallas).map(([nombre, talla], index) => (
-                <TouchableOpacity key={index} style={styles.button} onPress={() => handleTallaSelect(nombre)}>
-                  <Text style={styles.buttonText}>{` --> ${nombre} -  ${talla.precio}`}</Text>
+              <Text style={styles.sectionTitle}>Selecciona una Carne:</Text>
+              {menuData.gratenAlGusto.carnes.map((carne, index) => (
+                <TouchableOpacity key={index} style={styles.button} onPress={() => handleCarneSelect(carne)}>
+                  <Text style={styles.buttonText}>{carne}</Text>
                 </TouchableOpacity>
               ))}
-            </>
-          )}
-
-          {expandedSection === 'carnes' && (
-            <>
-              <Text style={styles.sectionTitle}>Selecciona {menuData.alGusto.tallas[selectedTalla].carnes} Carne(s):</Text>
-              {menuData.alGusto.carnes.map((carne, index) => (
-                <TouchableOpacity
-                  key={index}
-                  style={[styles.button, selectedCarnes.filter(c => c === carne).length > 0 && styles.selectedButton]}
-                  onPress={() => handleCarnesSelect(carne)}
-                >
-                  <Text style={styles.buttonText}>{carne} ({selectedCarnes.filter(c => c === carne).length})</Text>
-                </TouchableOpacity>
-              ))}
-            </>
-          )}
-
-          {expandedSection === 'bases' && (
-            <>
-              <Text style={styles.sectionTitle}>Selecciona una Base:</Text>
-              {Object.entries(menuData.alGusto.bases).map(([nombre, base], index) => (
-                <TouchableOpacity key={index} style={styles.button} onPress={() => handleBaseSelect(nombre)}>
-                  <Text style={styles.buttonText}>
-                    {`${nombre} \n${base.descripcion} \n${base.precio_extra || '0€'}`}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </>
-          )}
-
-          {expandedSection === 'salsas' && (
-            <>
-              <Text style={styles.sectionTitle}>Selecciona 2 Salsas:</Text>
-              {menuData.alGusto.salsas.map((salsa, index) => (
-                <TouchableOpacity
-                  key={index}
-                  style={[styles.button, selectedSalsas.includes(salsa) && styles.selectedButton]}
-                  onPress={() => handleSalsaSelect(salsa)}
-                >
-                  <Text style={styles.buttonText}>{salsa}</Text>
-                </TouchableOpacity>
-              ))}
-              {selectedSalsas.length < 2 && (
-                <Text style={styles.warningText}>Por favor, selecciona 2 salsas.</Text>
-              )}
-            </>
-          )}
-
-          {expandedSection === 'menu' && (
-            <>
-              <Text style={styles.sectionTitle}>¿Deseas añadir un menú?</Text>
-              <TouchableOpacity style={styles.button} onPress={handleMenuToggle}>
-                <Text style={styles.buttonText}>Añadir Menú</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.button} onPress={handleModalAcceptSinMenu}>
-                <Text style={styles.buttonText}>Sin Menú</Text>
-              </TouchableOpacity>
             </>
           )}
         </>
       ) : (
         <View style={styles.summary}>
-          <Text style={styles.sectionTitle}>Resumen de tu Taco:</Text>
-          <Text style={styles.summaryText}>{'->'} Talla: </Text>
-          <Text style={styles.baseText}>{'-'} {selectedTalla}</Text>
-          <Text style={styles.summaryText}>{'->'} Carnes: </Text>
-          {menuData.alGusto.carnes.map((carne, index) => {
-            const count = selectedCarnes.filter(c => c === carne).length;
-            return count > 0 ? <Text key={index} style={styles.carnesText}>{'-'} {carne} x{count}</Text> : null;
-          })}
-          <Text style={styles.summaryText}>{'->'} Base:</Text>
-          <Text style={styles.baseText}>{'-'} {selectedBase}</Text>
-          <Text style={styles.summaryText}>{'->'} Salsas:</Text>
-          {selectedSalsas.map((salsa, index) => (
-            <Text key={index} style={styles.baseText}>{'-'} {salsa}</Text>
-          ))}
+          <Text style={styles.sectionTitle}>Resumen de tu Taco Graten:</Text>
+          <Text style={styles.summaryText}>{'->'} Carne: </Text>
+          <Text style={styles.baseText}>{'-'} {selectedCarne}</Text>
           {selectedExtra && (
             <>
               <Text style={styles.summaryText}>{'->'} Extra:</Text>
               <Text style={styles.baseText}>{'-'} {selectedExtra.nombre}</Text>
-            </>
-          )}
-          {selectedGratin && (
-            <>
-              <Text style={styles.summaryText}>{'->'} Gratinado:</Text>
-              <Text style={styles.baseText}>{'-'} {selectedGratin.nombre}</Text>
             </>
           )}
           {isMenu && (
@@ -442,3 +273,79 @@ export default function AlGusto(props) {
     </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flexGrow: 1,
+    overflow: "hidden",
+    backgroundColor: '#D57C48',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 20,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#fff',
+    marginVertical: 10,
+  },
+  summaryText: {
+    color: '#fff',
+    fontSize: 18,
+    marginVertical: 5,
+    alignSelf: 'flex-start',
+  },
+  baseText: {
+    color: '#fff',
+    fontSize: 16,
+    marginVertical: 2,
+    alignSelf: 'flex-end',
+  },
+  button: {
+    backgroundColor: '#895232',
+    margin: 10,
+    padding: 10,
+    width: '70%',
+    borderRadius: 25,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 5,
+    elevation: 7,
+    alignItems: 'center',
+  },
+  acceptButton: {
+    backgroundColor: '#4CAF50',
+  },
+  cancelButton: {
+    backgroundColor: '#F44336',
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: '#D57C48',
+    padding: 20,
+    borderRadius: 10,
+    width: '80%',
+    alignItems: 'center',
+  },
+  summaryButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '80%',
+  },
+  selectedButton: {
+    borderColor: 'yellow',
+    borderWidth: 2,
+  },
+});

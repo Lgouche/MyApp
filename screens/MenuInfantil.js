@@ -8,7 +8,9 @@ export default function MenuInfantil({ navigation, resumenes, setResumenes }) {
   const [selectedOpcion1, setSelectedOpcion1] = useState(null);
   const [selectedOpcion2, setSelectedOpcion2] = useState(null);
   const [selectedBebida, setSelectedBebida] = useState(null);
+  const [selectedPostre, setSelectedPostre] = useState(null);
   const [isBebidaModalVisible, setIsBebidaModalVisible] = useState(false);
+  const [isPostreModalVisible, setIsPostreModalVisible] = useState(false);
   const [isSummaryVisible, setIsSummaryVisible] = useState(false);
 
   const handleOpcion1Select = (item) => {
@@ -19,8 +21,7 @@ export default function MenuInfantil({ navigation, resumenes, setResumenes }) {
     if (item === 'bebida') {
       setIsBebidaModalVisible(true);
     } else {
-      setSelectedOpcion2(item);
-      setIsSummaryVisible(true);
+      setIsPostreModalVisible(true);
     }
   };
 
@@ -31,9 +32,16 @@ export default function MenuInfantil({ navigation, resumenes, setResumenes }) {
     setIsSummaryVisible(true);
   };
 
+  const handlePostreSelect = (postre) => {
+    setSelectedPostre(postre);
+    setSelectedOpcion2('postre');
+    setIsPostreModalVisible(false);
+    setIsSummaryVisible(true);
+  };
+
   const calculateTotalPrice = () => {
     const opcion1Price = parseFloat(selectedOpcion1.precio.replace('€', ''));
-    const opcion2Price = selectedOpcion2 === 'bebida' ? parseFloat(menuData.menuInfantil.opcion2.bebida.precio.replace('€', '')) : parseFloat(menuData.menuInfantil.opcion2.postre.precio.replace('€', ''));
+    const opcion2Price = selectedOpcion2 === 'bebida' ? parseFloat(menuData.menuInfantil.opcion2.bebida.precio.replace('€', '')) : parseFloat(selectedPostre.precio.replace('€', ''));
     return opcion1Price + opcion2Price;
   };
 
@@ -41,7 +49,7 @@ export default function MenuInfantil({ navigation, resumenes, setResumenes }) {
     const nuevoResumen = {
       Tipo: 'Menu Infantil',
       Opcion1: selectedOpcion1.nombre,
-      Opcion2: selectedOpcion2 === 'bebida' ? `Bebida: ${selectedBebida}` : 'Postre',
+      Opcion2: selectedOpcion2 === 'bebida' ? `Bebida: ${selectedBebida}` : `Postre: ${selectedPostre.nombre}`,
       Precio: calculateTotalPrice(),
     };
 
@@ -51,6 +59,7 @@ export default function MenuInfantil({ navigation, resumenes, setResumenes }) {
     setSelectedOpcion1(null);
     setSelectedOpcion2(null);
     setSelectedBebida(null);
+    setSelectedPostre(null);
     setIsSummaryVisible(false);
   };
 
@@ -58,6 +67,7 @@ export default function MenuInfantil({ navigation, resumenes, setResumenes }) {
     setSelectedOpcion1(null);
     setSelectedOpcion2(null);
     setSelectedBebida(null);
+    setSelectedPostre(null);
     setIsSummaryVisible(false);
   };
 
@@ -88,7 +98,7 @@ export default function MenuInfantil({ navigation, resumenes, setResumenes }) {
           <Text style={stylesMenuInfantil.summaryText}>{'->'} Opción 1: </Text>
           <Text style={stylesMenuInfantil.baseText}>{'-'} {selectedOpcion1.nombre}</Text>
           <Text style={stylesMenuInfantil.summaryText}>{'->'} Opción 2: </Text>
-          <Text style={stylesMenuInfantil.baseText}>{'-'} {selectedOpcion2 === 'bebida' ? `Bebida: ${selectedBebida}` : 'Postre'}</Text>
+          <Text style={stylesMenuInfantil.baseText}>{'-'} {selectedOpcion2 === 'bebida' ? `Bebida: ${selectedBebida}` : `Postre: ${selectedPostre.nombre}`}</Text>
           <Text style={stylesMenuInfantil.summaryText}>{'->'} Total: {calculateTotalPrice()}€</Text>
           <View style={stylesMenuInfantil.summaryButtons}>
             <TouchableOpacity style={[stylesMenuInfantil.button, stylesMenuInfantil.acceptButton]} onPress={handleAccept}>
@@ -122,6 +132,31 @@ export default function MenuInfantil({ navigation, resumenes, setResumenes }) {
               </TouchableOpacity>
             ))}
             <TouchableOpacity style={[stylesMenuInfantil.button, stylesMenuInfantil.cancelButton]} onPress={() => setIsBebidaModalVisible(false)}>
+              <Text style={stylesMenuInfantil.buttonText}>Cancelar</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
+      <Modal
+        visible={isPostreModalVisible}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setIsPostreModalVisible(false)}
+      >
+        <View style={stylesMenuInfantil.modalContainer}>
+          <View style={stylesMenuInfantil.modalContent}>
+            <Text style={stylesMenuInfantil.sectionTitle}>Selecciona un Postre:</Text>
+            {Object.entries(menuData.postres).map(([nombre, postre], index) => (
+              <TouchableOpacity
+                key={index}
+                style={[stylesMenuInfantil.button, selectedPostre?.nombre === nombre && stylesMenuInfantil.selectedButton]}
+                onPress={() => handlePostreSelect({ nombre, ...postre })}
+              >
+                <Text style={stylesMenuInfantil.buttonText}>{`${nombre} - ${postre.precio}`}</Text>
+              </TouchableOpacity>
+            ))}
+            <TouchableOpacity style={[stylesMenuInfantil.button, stylesMenuInfantil.cancelButton]} onPress={() => setIsPostreModalVisible(false)}>
               <Text style={stylesMenuInfantil.buttonText}>Cancelar</Text>
             </TouchableOpacity>
           </View>
