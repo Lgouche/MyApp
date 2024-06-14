@@ -18,6 +18,7 @@ import Vegetarianos from './screens/Vegetarianos';
 import Postres from './screens/Postres';
 import MenuInfantil from './screens/MenuInfantil';
 import Entrantes from './screens/Entrantes';
+import AlGustoGraten from './screens/AlGustoGraten';
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -163,13 +164,24 @@ export default function App() {
         <Stack.Screen
           name="Entrantes"
           options={{
-            title: 'Menu Infantil',
+            title: 'Entrantes',
             headerTintColor: 'white',
             headerTitleAlign: 'center',
             headerStyle: { backgroundColor: '#D57C48' }
           }}
         >
           {props => <Entrantes {...props} resumenes={resumenes} setResumenes={setResumenes} />}
+        </Stack.Screen>
+        <Stack.Screen
+          name="AlGustoGraten"
+          options={{
+            title: 'AlGustoGraten',
+            headerTintColor: 'white',
+            headerTitleAlign: 'center',
+            headerStyle: { backgroundColor: '#D57C48' }
+          }}
+        >
+          {props => <AlGustoGraten {...props} resumenes={resumenes} setResumenes={setResumenes} />}
         </Stack.Screen>
       </Stack.Navigator>
     );

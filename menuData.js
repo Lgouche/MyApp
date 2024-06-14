@@ -124,9 +124,7 @@ const menuData = {
     piroAbo: {
       precio: "9€",
       descripcion: "San Jacobo, nuggets, salsa Pili Pili y tiras de bacon"
-    }
-  },
-  especiales: {
+    },
     tacostar: {
       precio: "11.50€",
       descripcion: "San Jacobo, tenders, kebab de pollo, salsa argelina, tiras de bacon y mozzarella"
@@ -138,8 +136,8 @@ const menuData = {
       nuggets:{precio:"0€"}
     },
     opcion2:{
-      postre:{precio:"0€"},
-      bebida:{precio:"0€"}
+      postre:{precio:"5€"},
+      bebida:{precio:"5€"}
     }
   },
   postres:{
@@ -147,7 +145,78 @@ const menuData = {
     tartaDeChocolate:{precio:"2€"},
     polim:{precio:"2€"},
     tobletone:{precio:"2€"},
+  },
+  vegano:{
+    elVeggie:{
+      precio:"8.50€" ,
+      descripcion:"Carne vegeariana, zanahoria, cebolla,pimientos"
+    },
+    elHummer:{
+      precio:"8.50€" ,
+      descripcion:"Carne vegeariana,cebolla,tomate y lechuga"
+    },
+    specialV:{
+      precio:"8.50€" ,
+      descripcion:"Carne vegeariana, pimientos, cebolla y aguacate"
+    },
+    oTandori:{
+      precio:"8.50€" ,
+      descripcion:"Carne vegeariana, tomates cherry y maiz"
+    }
+  },
+  entrantes:{
+    arosDeCebolla:{precio:"2€"},
+    fingersDeMozarella:{precio:"2€"},
+    nuggetsDePollo:{precio:"3.50€"},
+    chickenTenders:{precio:"6€"},
+    bolitasDeCamembert:{precio:"3€"},
+    jalapeños:{precio:"3.50€"},
+    laBox:{precio:"4.50€"}
+  },
+  graten:{
+    montaña:{
+      precio:"8€",
+      descripcion:"Patatas, pollo y tiras de bacon G. Mozarella"
+    },
+    elOslo:{
+      precio:"8€",
+      descripcion:"Patatas, carme picada y salsa magic union G. Mozarella"
+    },
+    reclette:{
+      precio:"8€",
+      descripcion:"Patatas, tiras de bacon y reclette G. Mozarella"
+    },
+    pimientos:{
+      precio:"8€",
+      descripcion:"Patatas, tenders y pimientos G. Mozarella"
+    }
+  },
+  gratenAlGusto:{
+    carnes: [
+      "Pollo fresco/marinado",
+      "Carne picada",
+      "San Jacobo",
+      "Nuggets de pollo",
+      "Chicken Tenders",
+      "Kebab",
+      "Nuggets vegetarianos",
+      "Carne vegetariana"
+    ],
+    extras: [
+      { nombre: "Gouda", precio: "0.50€" },
+      { nombre: "Cheddar", precio: "0.50€" },
+      { nombre: "Mozarella", precio: "0.50€" },
+      { nombre: "Vaca que ríe", precio: "0.50€" },
+      { nombre: "Queso de cabra", precio: "0.50€" },
+      { nombre: "Aceitunas verdes", precio: "0.50€" },
+      { nombre: "Aceitunas negras", precio: "0.50€" },
+      { nombre: "Pimientos", precio: "0.50€" },
+      { nombre: "Aros de cebolla", precio: "0.50€" },
+      { nombre: "Tiras de bacon", precio: "0.70€" },
+      { nombre: "Champiñones", precio: "0.70€" }
+    ],
   }
+
 };
 
 export default menuData;

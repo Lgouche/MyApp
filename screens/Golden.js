@@ -155,7 +155,7 @@ export default function Golden({ navigation, resumenes, setResumenes }) {
               <Text style={styles.buttonText}>Aceptar</Text>
             </TouchableOpacity>
           </View>
-        </View>
+        </View> 
       </Modal>
 
       {!isSummary ? (

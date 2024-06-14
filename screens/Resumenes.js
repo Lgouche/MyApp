@@ -99,14 +99,36 @@ export default function Resumenes({ resumenes = [], setResumenes }) {
                   ))}
                   <Text style={styles.summaryText}>{'->'} Base:</Text>
                   <Text style={styles.baseText}>{'-'} {resumen.Base}</Text>
-                  <Text style={styles.summaryText}>{'->'} Salsa:</Text>
-                  <Text style={styles.baseText}>{'-'} {resumen.Salsa}</Text>
+                  <Text style={styles.summaryText}>{'->'} Salsas:</Text>
+                  {resumen.Salsas && resumen.Salsas.map((salsa, i) => (
+                    <Text key={i} style={styles.baseText}>{'-'} {salsa}</Text>
+                  ))}
+                  {resumen.Extra && (
+                    <>
+                      <Text style={styles.summaryText}>{'->'} Extra:</Text>
+                      <Text style={styles.baseText}>{'-'} {resumen.Extra}</Text>
+                    </>
+                  )}
+                  {resumen.Gratin && (
+                    <>
+                      <Text style={styles.summaryText}>{'->'} Gratinado:</Text>
+                      <Text style={styles.baseText}>{'-'} {resumen.Gratin}</Text>
+                    </>
+                  )}
                 </>
               ) : resumen.Tipo === 'Bebida' ? (
                 <>
                   <Text style={styles.textTitleTipe}>Bebida</Text>
                   <Text style={styles.summaryText}>{'->'} Nombre: </Text>
                   <Text style={styles.baseText}>{'-'} {resumen.Nombre}</Text>
+                </>
+              ) : resumen.Tipo === 'Menu Infantil' ? (
+                <>
+                  <Text style={styles.textTitleTipe}>Menú Infantil</Text>
+                  <Text style={styles.summaryText}>{'->'} Opción 1: </Text>
+                  <Text style={styles.baseText}>{'-'} {resumen.Opcion1}</Text>
+                  <Text style={styles.summaryText}>{'->'} Opción 2: </Text>
+                  <Text style={styles.baseText}>{'-'} {resumen.Opcion2}</Text>
                 </>
               ) : (
                 <>
