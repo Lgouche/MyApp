@@ -240,7 +240,9 @@ export default function AlGusto(props) {
         transparent={true}
         onRequestClose={() => setIsExtraModalVisible(false)}
       >
+        <ScrollView>
         <View style={styles.modalContainer}>
+          
           <View style={styles.modalContent}>
             <Text style={styles.sectionTitle}>Selecciona un Extra:</Text>
             {menuData.alGusto.extras.map((extra, index) => (
@@ -256,7 +258,9 @@ export default function AlGusto(props) {
               <Text style={styles.buttonText}>Cancelar</Text>
             </TouchableOpacity>
           </View>
+          
         </View>
+        </ScrollView>
       </Modal>
 
       <Modal

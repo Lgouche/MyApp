@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Modal } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import menuData from '../menuData';
+import styles from '../src/styles';
 
 export default function AlGustoGraten({ navigation, resumenes, setResumenes }) {
   const [expandedSection, setExpandedSection] = useState('carne');
@@ -171,6 +172,7 @@ export default function AlGustoGraten({ navigation, resumenes, setResumenes }) {
         transparent={true}
         onRequestClose={() => setIsExtraModalVisible(false)}
       >
+        <ScrollView>
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <Text style={styles.sectionTitle}>Selecciona un Extra:</Text>
@@ -188,6 +190,7 @@ export default function AlGustoGraten({ navigation, resumenes, setResumenes }) {
             </TouchableOpacity>
           </View>
         </View>
+        </ScrollView>
       </Modal>
 
       <Modal
@@ -241,7 +244,7 @@ export default function AlGustoGraten({ navigation, resumenes, setResumenes }) {
         </>
       ) : (
         <View style={styles.summary}>
-          <Text style={styles.sectionTitle}>Resumen de tu Taco Graten:</Text>
+          <Text style={styles.sectionTitle}>Resumen de Graten:</Text>
           <Text style={styles.summaryText}>{'->'} Carne: </Text>
           <Text style={styles.baseText}>{'-'} {selectedCarne}</Text>
           {selectedExtra && (
@@ -274,78 +277,4 @@ export default function AlGustoGraten({ navigation, resumenes, setResumenes }) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-    overflow: "hidden",
-    backgroundColor: '#D57C48',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 20,
-  },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#fff',
-    marginVertical: 10,
-  },
-  summaryText: {
-    color: '#fff',
-    fontSize: 18,
-    marginVertical: 5,
-    alignSelf: 'flex-start',
-  },
-  baseText: {
-    color: '#fff',
-    fontSize: 16,
-    marginVertical: 2,
-    alignSelf: 'flex-end',
-  },
-  button: {
-    backgroundColor: '#895232',
-    margin: 10,
-    padding: 10,
-    width: '70%',
-    borderRadius: 25,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.8,
-    shadowRadius: 5,
-    elevation: 7,
-    alignItems: 'center',
-  },
-  acceptButton: {
-    backgroundColor: '#4CAF50',
-  },
-  cancelButton: {
-    backgroundColor: '#F44336',
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  modalContent: {
-    backgroundColor: '#D57C48',
-    padding: 20,
-    borderRadius: 10,
-    width: '80%',
-    alignItems: 'center',
-  },
-  summaryButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '80%',
-  },
-  selectedButton: {
-    borderColor: 'yellow',
-    borderWidth: 2,
-  },
-});
+

@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Modal } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import menuData from '../menuData';
-import styles from "../src/styles";
-
+import styles from '../src/styles';
 export default function Postres({ navigation, resumenes, setResumenes }) {
   const [selectedPostre, setSelectedPostre] = useState(null);
   const [isSummary, setIsSummary] = useState(false);

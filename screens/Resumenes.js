@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Modal, TextInput,
 import { MaterialIcons } from '@expo/vector-icons';
 import { db } from '../credenciales';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import * as FileSystem from 'expo-file-system';
 
 export default function Resumenes({ resumenes = [], setResumenes }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -34,6 +35,11 @@ export default function Resumenes({ resumenes = [], setResumenes }) {
     setSelectedIndex(null);
   };
 
+  const handleDuplicatePress = (index) => {
+    const duplicateResumen = { ...resumenes[index] };
+    setResumenes([...resumenes, duplicateResumen]);
+  };
+
   const handleConfirmAll = () => {
     setIsTableModalVisible(true);
   };
@@ -54,6 +60,27 @@ export default function Resumenes({ resumenes = [], setResumenes }) {
 
       await addDoc(collection(db, 'orders'), newOrder);
 
+      // Generate .txt file with order details
+      const orderDetailsText = `Número de mesa: ${tableNumber}\nDetalles del pedido:\n` +
+        resumenes.map((resumen, index) => (
+          `Pedido ${index + 1}:\n` +
+          `Tipo: ${resumen.Tipo}\n` +
+          (resumen.Talla ? `Talla: ${resumen.Talla}\n` : '') +
+          (resumen.Carnes ? `Carnes: ${resumen.Carnes.join(', ')}\n` : '') +
+          (resumen.Base ? `Base: ${resumen.Base}\n` : '') +
+          (resumen.Salsas ? `Salsas: ${resumen.Salsas.join(', ')}\n` : '') +
+          (resumen.Extra ? `Extra: ${resumen.Extra}\n` : '') +
+          (resumen.Gratin ? `Gratinado: ${resumen.Gratin}\n` : '') +
+          (resumen.Nombre ? `Nombre: ${resumen.Nombre}\n` : '') +
+          (resumen.Descripcion ? `Descripción: ${resumen.Descripcion}\n` : '') +
+          (resumen.Menu ? `Menú - Tamaño: ${resumen.Menu.Tamaño}, Bebida: ${resumen.Menu.Bebida}\n` : '') +
+          `Precio: ${resumen.Precio}€\n\n`
+        )).join('') +
+        `Precio total: ${totalPrice}€\n`;
+
+      const fileUri = FileSystem.documentDirectory + 'order_summary.txt';
+      await FileSystem.writeAsStringAsync(fileUri, orderDetailsText);
+
       console.log('Order confirmed for table number:', tableNumber);
       console.log('Order details:', resumenes);
 
@@ -67,6 +94,7 @@ export default function Resumenes({ resumenes = [], setResumenes }) {
       console.error('Error saving order to Firebase:', error);
       Alert.alert('Error', 'Hubo un problema al guardar el pedido');
     }
+    navigation.navigate('Home');
   };
 
   const handleTableModalCancel = () => {
@@ -87,6 +115,12 @@ export default function Resumenes({ resumenes = [], setResumenes }) {
                 onPress={() => handleDeletePress(index)}
               >
                 <MaterialIcons name="close" size={24} color="white" />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.duplicateButton}
+                onPress={() => handleDuplicatePress(index)}
+              >
+                <MaterialIcons name="add" size={24} color="white" />
               </TouchableOpacity>
               {resumen.Tipo === 'Al Gusto' ? (
                 <>
@@ -245,6 +279,14 @@ const styles = StyleSheet.create({
     top: 10,
     right: 10,
     backgroundColor: 'red',
+    borderRadius: 12,
+    padding: 2,
+  },
+  duplicateButton: {
+    position: 'absolute',
+    top: 10,
+    right: 40,
+    backgroundColor: 'blue',
     borderRadius: 12,
     padding: 2,
   },
