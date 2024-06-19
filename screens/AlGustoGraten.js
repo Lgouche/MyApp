@@ -193,7 +193,7 @@ export default function AlGustoGraten({ navigation, resumenes, setResumenes }) {
                   style={[styles.button, selectedExtra === extra && styles.selectedButton]}
                   onPress={() => handleExtraSelect(extra)}
                 >
-                  <Text style={styles.buttonText}>{`${extra.nombre} - Precio: ${extra.precio}`}</Text>
+                  <Text style={styles.buttonText}>{`${extra.nombre} -${extra.precio}`}</Text>
                 </TouchableOpacity>
               ))}
               <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={() => setIsExtraModalVisible(false)}>

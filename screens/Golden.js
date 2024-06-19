@@ -76,7 +76,10 @@ export default function Golden({ navigation, resumenes, setResumenes }) {
   const calculateTotalPrice = () => {
     const tacoPrice = parseFloat(selectedTaco.precio.replace('€', ''));
     const menuPrice = isMenu ? parseFloat(menuData.menus[selectedMenuSize].precio.replace('€', '')) : 0;
-    return tacoPrice + menuPrice;
+    const gratinadoPrice = isGratinado ? parseFloat(menuData.gratinado.precio.replace('€', '')) : 0;
+    const gratinadoExtra = isGratinado? parseFloat(selectedGratin.precio.replace('€', '')) : 0;
+
+    return tacoPrice + menuPrice+gratinadoPrice + gratinadoExtra;
   };
 
   const handleAccept = () => {

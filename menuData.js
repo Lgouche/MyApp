@@ -20,7 +20,8 @@ const menuData = {
     ],
     bases: {
       original: {
-        descripcion: "SALSA DE QUESO + PATATAS"
+        descripcion: "SALSA DE QUESO + PATATAS",
+        precio_extra: "0€"
       },
       tchoukTchouka: {
         descripcion: "SALSA DE QUESO + PATATAS + TCHOUK-TCHOUKA",
@@ -195,6 +196,9 @@ const menuData = {
       precio:"8.50€" ,
       descripcion:"CARNE VEGETARIANA, TOMATES CHERRY Y MAIZ"
     }
+  },
+  gratinado:{
+    precio:"1€"
   },
   entrantes:{
     arosDeCebolla:{precio:"2€"},

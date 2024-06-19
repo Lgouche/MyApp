@@ -22,7 +22,7 @@ export default function AlGusto(props) {
   const [isGratinQuestionVisible, setIsGratinQuestionVisible] = useState(false);
   const [isGratinModalVisible, setIsGratinModalVisible] = useState(false);
   const [isWarningModalVisible, setIsWarningModalVisible] = useState(false);
-
+  const [isGratinado,setIsGratinado] = useState(false);
   const handleTallaSelect = (nombre) => {
     setSelectedTalla(nombre);
     setExpandedSection('carnes');
@@ -77,8 +77,10 @@ export default function AlGusto(props) {
     setIsGratinQuestionVisible(false);
     if (option === 'yes') {
       setIsGratinModalVisible(true);
+      setIsGratinado(true);
     } else {
       setExpandedSection('menu');
+      setIsGratinado(false);
     }
   };
 
@@ -126,7 +128,12 @@ export default function AlGusto(props) {
     const menuPrice = isMenu ? parseFloat(menuData.menus[selectedMenuSize].precio.replace('€', '')) : 0;
     const extraPrice = selectedExtra ? parseFloat(selectedExtra.precio.replace('€', '')) : 0;
     const gratinPrice = selectedGratin ? parseFloat(menuData.alGusto.gratinar[selectedTalla].precio.replace('€', '')) : 0;
-    return tallaPrice + basePrice + menuPrice + extraPrice + gratinPrice;
+    const gratinadoPrice = selectedGratin ? parseFloat(selectedGratin.precio.replace('€', '')) : 0;
+    
+    console.log(tallaPrice + " "+ basePrice+ " "+menuPrice+ " "+extraPrice+ " "+gratinPrice+ " "+gratinadoPrice);
+    return tallaPrice + basePrice + menuPrice + extraPrice + gratinPrice + gratinadoPrice;
+    setSelectedGratin
+    
   };
 
   const handleAccept = () => {
