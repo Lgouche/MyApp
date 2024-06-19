@@ -225,14 +225,14 @@ const menuData = {
   },
   gratenAlGusto:{
     carnes: [
-      "POLLO FRESCO/MARINADO",
-      "CARNE PICADA",
-      "SAN JACOBO",
-      "NUGGETS DE POLLO",
-      "CHICKEN TENDERS",
-      "KEBAB",
-      "NUGGETS VEGETARIANOS",
-      "CARNE VEGETARIANA"
+      { nombre: "POLLO FRESCO/MARINADO", precio: "8€" },
+      { nombre: "CARNE PICADA", precio: "8€" },
+      { nombre: "SAN JACOBO", precio: "8€" },
+      { nombre: "NUGGETS DE POLLO", precio: "8€" },
+      { nombre: "CHICKEN TENDERS", precio: "8€" },
+      { nombre: "KEBAB", precio: "8€" },
+      { nombre: "NUGGETS VEGETARIANOS", precio: "8€" },
+      { nombre: "CARNE VEGETARIANA", precio: "8€" }
     ],
     extras: [
       { nombre: "Gouda", precio: "0.50€" },

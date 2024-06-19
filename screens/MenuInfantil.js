@@ -16,6 +16,7 @@ export default function MenuInfantil({ navigation, resumenes, setResumenes }) {
   const handleOpcion1Select = (item) => {
     setSelectedOpcion1(item);
   };
+  
 
   const handleOpcion2Select = (item) => {
     if (item === 'bebida') {
@@ -24,6 +25,7 @@ export default function MenuInfantil({ navigation, resumenes, setResumenes }) {
       setIsPostreModalVisible(true);
     }
   };
+  
 
   const handleBebidaSelect = (bebida) => {
     setSelectedBebida(bebida);
@@ -123,7 +125,8 @@ export default function MenuInfantil({ navigation, resumenes, setResumenes }) {
           <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <Text style={styles.sectionTitle}>Selecciona una Bebida:</Text>
-            {menuData.bebidas.map((bebida, index) => (
+            {menuData.bebidas.filter(bebida => bebida.categoria === "normal")
+            .map((bebida, index) => (
               <TouchableOpacity
                 key={index}
                 style={[styles.button, selectedBebida === bebida.nombre && styles.selectedButton]}

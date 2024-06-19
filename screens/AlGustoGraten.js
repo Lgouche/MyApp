@@ -22,6 +22,10 @@ export default function AlGustoGraten({ navigation, resumenes, setResumenes }) {
     setSelectedCarne(carne);
     setIsExtraQuestionVisible(true);
   };
+  const getBebidasByCategory = (category) => {
+    return menuData.bebidas.filter(bebida => bebida.categoria === category);
+  };
+
 
   const handleExtraOptionSelect = (option) => {
     setIsExtraQuestionVisible(false);
@@ -59,6 +63,7 @@ export default function AlGustoGraten({ navigation, resumenes, setResumenes }) {
     if (selectedMenuSize && selectedBebida) {
       setIsModalVisible(false);
       setIsSummary(true);
+      setIsMenu(true);
     } else {
       setIsWarningModalVisible(true);
     }
@@ -70,9 +75,11 @@ export default function AlGustoGraten({ navigation, resumenes, setResumenes }) {
   };
 
   const calculateTotalPrice = () => {
+    
+    const carnePrice = parseFloat(selectedCarne.precio.replace('€', '')) ;
     const extraPrice = selectedExtra ? parseFloat(selectedExtra.precio.replace('€', '')) : 0;
     const menuPrice = isMenu ? parseFloat(menuData.menus[selectedMenuSize].precio.replace('€', '')) : 0;
-    return extraPrice + menuPrice;
+    return extraPrice + menuPrice + carnePrice;
   };
 
   const handleAccept = () => {
@@ -115,36 +122,40 @@ export default function AlGustoGraten({ navigation, resumenes, setResumenes }) {
         transparent={true}
         onRequestClose={() => setIsModalVisible(false)}
       >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.sectionTitle}>Selecciona el tamaño del menú:</Text>
-            {Object.entries(menuData.menus).map(([size, details], index) => (
-              <TouchableOpacity
-                key={index}
-                style={[styles.button, selectedMenuSize === size && styles.selectedButton]}
-                onPress={() => handleMenuSizeSelect(size)}
-              >
-                <Text style={styles.buttonText}>{`${size.charAt(0).toUpperCase() + size.slice(1)} - Precio: ${details.precio}`}</Text>
+        <ScrollView contentContainerStyle={styles.modalScrollContainer}>
+          <View style={styles.modalContainer}>
+
+            <View style={styles.modalContent}>
+              <Text style={styles.sectionTitle}>Selecciona el tamaño del menú:</Text>
+              {Object.entries(menuData.menus).map(([size, details], index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={[styles.button, selectedMenuSize === size && styles.selectedButton]}
+                  onPress={() => handleMenuSizeSelect(size)}
+                >
+                  <Text style={styles.buttonText}>{`${size.charAt(0).toUpperCase() + size.slice(1)} - Precio: ${details.precio}`}</Text>
+                </TouchableOpacity>
+              ))}
+              <Text style={styles.sectionTitle}>Selecciona una Bebida:</Text>
+              {selectedMenuSize && getBebidasByCategory(selectedMenuSize).map((bebida, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={[styles.button, selectedBebida === bebida.nombre && styles.selectedButton]}
+                  onPress={() => handleBebidaSelect(bebida.nombre)}
+                >
+                  <Text style={styles.buttonText}>{bebida.nombre}</Text>
+                </TouchableOpacity>
+              ))}
+              <TouchableOpacity style={[styles.button, styles.acceptButton]} onPress={handleModalAccept}>
+                <Text style={styles.buttonText}>Aceptar</Text>
               </TouchableOpacity>
-            ))}
-            <Text style={styles.sectionTitle}>Selecciona una Bebida:</Text>
-            {menuData.bebidas.map((bebida, index) => (
-              <TouchableOpacity
-                key={index}
-                style={[styles.button, selectedBebida === bebida.nombre && styles.selectedButton]}
-                onPress={() => handleBebidaSelect(bebida.nombre)}
-              >
-                <Text style={styles.buttonText}>{bebida.nombre}</Text>
+              <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={() => setIsModalVisible(false)}>
+                <Text style={styles.buttonText}>Cancelar</Text>
               </TouchableOpacity>
-            ))}
-            <TouchableOpacity style={[styles.button, styles.acceptButton]} onPress={handleModalAccept}>
-              <Text style={styles.buttonText}>Aceptar</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={() => setIsModalVisible(false)}>
-              <Text style={styles.buttonText}>Cancelar</Text>
-            </TouchableOpacity>
+            </View>
           </View>
-        </View>
+        </ScrollView>
+
       </Modal>
 
       <Modal
@@ -173,23 +184,23 @@ export default function AlGustoGraten({ navigation, resumenes, setResumenes }) {
         onRequestClose={() => setIsExtraModalVisible(false)}
       >
         <ScrollView>
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.sectionTitle}>Selecciona un Extra:</Text>
-            {menuData.gratenAlGusto.extras.map((extra, index) => (
-              <TouchableOpacity
-                key={index}
-                style={[styles.button, selectedExtra === extra && styles.selectedButton]}
-                onPress={() => handleExtraSelect(extra)}
-              >
-                <Text style={styles.buttonText}>{`${extra.nombre} - Precio: ${extra.precio}`}</Text>
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <Text style={styles.sectionTitle}>Selecciona un Extra:</Text>
+              {menuData.gratenAlGusto.extras.map((extra, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={[styles.button, selectedExtra === extra && styles.selectedButton]}
+                  onPress={() => handleExtraSelect(extra)}
+                >
+                  <Text style={styles.buttonText}>{`${extra.nombre} - Precio: ${extra.precio}`}</Text>
+                </TouchableOpacity>
+              ))}
+              <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={() => setIsExtraModalVisible(false)}>
+                <Text style={styles.buttonText}>Cancelar</Text>
               </TouchableOpacity>
-            ))}
-            <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={() => setIsExtraModalVisible(false)}>
-              <Text style={styles.buttonText}>Cancelar</Text>
-            </TouchableOpacity>
+            </View>
           </View>
-        </View>
         </ScrollView>
       </Modal>
 
@@ -236,7 +247,7 @@ export default function AlGustoGraten({ navigation, resumenes, setResumenes }) {
               <Text style={styles.sectionTitle}>Selecciona una Carne:</Text>
               {menuData.gratenAlGusto.carnes.map((carne, index) => (
                 <TouchableOpacity key={index} style={styles.button} onPress={() => handleCarneSelect(carne)}>
-                  <Text style={styles.buttonText}>{carne}</Text>
+                  <Text style={styles.buttonText}>{carne.nombre}</Text>
                 </TouchableOpacity>
               ))}
             </>
@@ -246,7 +257,7 @@ export default function AlGustoGraten({ navigation, resumenes, setResumenes }) {
         <View style={styles.summary}>
           <Text style={styles.sectionTitle}>Resumen de Graten:</Text>
           <Text style={styles.summaryText}>{'->'} Carne: </Text>
-          <Text style={styles.baseText}>{'-'} {selectedCarne}</Text>
+          <Text style={styles.baseText}>{'-'} {selectedCarne.nombre}</Text>
           {selectedExtra && (
             <>
               <Text style={styles.summaryText}>{'->'} Extra:</Text>
