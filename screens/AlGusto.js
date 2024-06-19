@@ -22,7 +22,6 @@ export default function AlGusto(props) {
   const [isGratinQuestionVisible, setIsGratinQuestionVisible] = useState(false);
   const [isGratinModalVisible, setIsGratinModalVisible] = useState(false);
   const [isWarningModalVisible, setIsWarningModalVisible] = useState(false);
-  const [isGratinado,setIsGratinado] = useState(false);
   const handleTallaSelect = (nombre) => {
     setSelectedTalla(nombre);
     setExpandedSection('carnes');
@@ -181,6 +180,10 @@ export default function AlGusto(props) {
     setSelectedBebida(null);
     setIsSummary(false);
   };
+  
+  const getBebidasByCategory = (category) => {
+    return menuData.bebidas.filter(bebida => bebida.categoria === category);
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -190,6 +193,7 @@ export default function AlGusto(props) {
         transparent={true}
         onRequestClose={() => setIsModalVisible(false)}
       >
+        <ScrollView contentContainerStyle={styles.modalScrollContainer}>
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <Text style={styles.sectionTitle}>Selecciona el tamaño del menú:</Text>
@@ -203,7 +207,7 @@ export default function AlGusto(props) {
               </TouchableOpacity>
             ))}
             <Text style={styles.sectionTitle}>Selecciona una Bebida:</Text>
-            {menuData.bebidas.map((bebida, index) => (
+            {selectedMenuSize && getBebidasByCategory(selectedMenuSize).map((bebida, index) => (
               <TouchableOpacity
                 key={index}
                 style={[styles.button, selectedBebida === bebida.nombre && styles.selectedButton]}
@@ -220,6 +224,8 @@ export default function AlGusto(props) {
             </TouchableOpacity>
           </View>
         </View>
+        </ScrollView>
+        
       </Modal>
 
       <Modal
