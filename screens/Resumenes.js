@@ -11,6 +11,8 @@ export default function Resumenes({ resumenes = [], setResumenes }) {
   const [totalPrice, setTotalPrice] = useState(0);
   const [isTableModalVisible, setIsTableModalVisible] = useState(false);
   const [tableNumber, setTableNumber] = useState('');
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+
 
   useEffect(() => {
     const total = resumenes.reduce((acc, resumen) => acc + parseFloat(resumen.Precio), 0);
@@ -45,6 +47,8 @@ export default function Resumenes({ resumenes = [], setResumenes }) {
   };
 
   const handleTableModalAccept = async () => {
+
+    setIsButtonDisabled(true);
     try {
       if (!tableNumber) {
         Alert.alert('Error', 'Introduce el número de mesa');
@@ -93,6 +97,8 @@ export default function Resumenes({ resumenes = [], setResumenes }) {
     } catch (error) {
       console.error('Error saving order to Firebase:', error);
       Alert.alert('Error', 'Hubo un problema al guardar el pedido');
+    } finally{
+      setIsButtonDisabled(false);
     }
     navigation.navigate('Home');
   };
@@ -219,6 +225,13 @@ export default function Resumenes({ resumenes = [], setResumenes }) {
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
+            <Text style={styles.sectionTitle}>Seleccione una opcion</Text>
+            <TouchableOpacity style={[styles.button, styles.llevarButton]} >
+              <Text style={styles.buttonText}>TOMAR</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.button, styles.tomarButton]} >
+              <Text style={styles.buttonText}>LLEVAR</Text>
+            </TouchableOpacity>
             <Text style={styles.sectionTitle}>Introduce el número de mesa</Text>
             <TextInput
               style={styles.input}
@@ -228,10 +241,10 @@ export default function Resumenes({ resumenes = [], setResumenes }) {
               placeholder="Número de mesa"
               placeholderTextColor="#ccc"
             />
-            <TouchableOpacity style={[styles.button, styles.acceptButton]} onPress={handleTableModalAccept}>
+            <TouchableOpacity style={[styles.button, styles.acceptButton]} onPress={handleTableModalAccept} disabled={isButtonDisabled}>
               <Text style={styles.buttonText}>Aceptar</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={handleTableModalCancel}>
+            <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={handleTableModalCancel} disabled={isButtonDisabled}>
               <Text style={styles.buttonText}>Cancelar</Text>
             </TouchableOpacity>
           </View>
@@ -385,5 +398,33 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'center',
+  },
+  llevarButton: {
+    backgroundColor: '#9703b8',
+    margin: 10,
+    padding: 10,
+    width: '40%',
+    borderRadius: 25,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 5,
+    elevation: 7,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  tomarButton: {
+    backgroundColor: '#bf6ed1',
+    margin: 10,
+    padding: 10,
+    width: '40%',
+    borderRadius: 25,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 5,
+    elevation: 7,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

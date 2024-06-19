@@ -13,9 +13,27 @@ export default function Golden({ navigation, resumenes, setResumenes }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isMenuModalVisible, setIsMenuModalVisible] = useState(false);
   const [isWarningModalVisible, setIsWarningModalVisible] = useState(false);
+  const [isGratinQuestionVisible, setIsGratinQuestionVisible] = useState(false);
+  const [isGratinModalVisible, setIsGratinModalVisible] = useState(false);
+  const [selectedGratin, setSelectedGratin] = useState(null);
+  const [isGratinado, setIsGratinado] = useState(false);
 
   const handleTacoSelect = (taco) => {
     setSelectedTaco(taco);
+    setIsGratinQuestionVisible(true);
+  };
+  const handleGratinOptionSelect = (option) => {
+    setIsGratinQuestionVisible(false);
+    if (option === 'yes') {
+      setIsGratinado(true);
+      setIsGratinModalVisible(true);
+    } else {
+      setIsModalVisible(true);
+    }
+  };
+  const handleGratinSelect = (gratin) => {
+    setSelectedGratin(gratin);
+    setIsGratinModalVisible(false);
     setIsModalVisible(true);
   };
 
@@ -61,6 +79,7 @@ export default function Golden({ navigation, resumenes, setResumenes }) {
         Tamaño: selectedMenuSize,
         Bebida: selectedBebida,
       } : null,
+      Gratin: selectedGratin ? selectedGratin.nombre : null,
       Precio: calculateTotalPrice(),
     };
 
@@ -72,6 +91,8 @@ export default function Golden({ navigation, resumenes, setResumenes }) {
     setIsMenu(false);
     setSelectedMenuSize(null);
     setSelectedBebida(null);
+    setSelectedGratin(null);
+    setIsGratinado(false);
   };
 
   const handleCancel = () => {
@@ -80,10 +101,59 @@ export default function Golden({ navigation, resumenes, setResumenes }) {
     setIsMenu(false);
     setSelectedMenuSize(null);
     setSelectedBebida(null);
+    setIsGratinado(false);
+    setSelectedGratin(null)
   };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+       <Modal
+        visible={isGratinQuestionVisible}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setIsGratinQuestionVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.sectionTitle}>¿Deseas gratinar tu taco?</Text>
+            <TouchableOpacity style={[styles.button, styles.acceptButton]} onPress={() => handleGratinOptionSelect('yes')}>
+              <Text style={styles.buttonText}>Sí</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={() => handleGratinOptionSelect('no')}>
+              <Text style={styles.buttonText}>No</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
+      <Modal
+        visible={isGratinModalVisible}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setIsGratinModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.sectionTitle}>Extra de gratinzacion:</Text>
+            {Object.entries(menuData.alGusto.gratinadoProductos).map(([nombre, gratin], index) => (
+              <TouchableOpacity
+                key={index}
+                style={[styles.button, selectedGratin && selectedGratin.nombre === nombre && styles.selectedButton]}
+                onPress={() => handleGratinSelect({ nombre, ...gratin })}
+              >
+                <Text style={styles.buttonText}>{`${nombre.charAt(0).toUpperCase() + nombre.slice(1)} - Precio: ${gratin.precio}`}</Text>
+              </TouchableOpacity>
+            ))}
+            <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={() => setIsGratinModalVisible(false)}>
+              <Text style={styles.buttonText}>Cancelar</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
+
+
+
       <Modal
         visible={isModalVisible}
         animationType="slide"
@@ -175,13 +245,21 @@ export default function Golden({ navigation, resumenes, setResumenes }) {
           <Text style={styles.baseText}>{'-'} {selectedTaco.nombre}</Text>
           <Text style={styles.summaryText}>{'->'} Descripción: </Text>
           <Text style={styles.baseText}>{'-'} {selectedTaco.descripcion}</Text>
-          {isMenu && (
+          {isGratinado && (
+            <>
+              <Text style={styles.summaryText}>{'->'} Gratinado:</Text>
+              <Text style={styles.baseText}>{'-'} {selectedGratin.nombre}</Text>
+            </>
+          )}
+          {           
+          isMenu && (
             <>
               <Text style={styles.summaryText}>{'->'} Menú:</Text>
               <Text style={styles.baseText}>{'-'} Tamaño: {selectedMenuSize}</Text>
               <Text style={styles.baseText}>{'-'} Bebida: {selectedBebida}</Text>
             </>
-          )}
+          )
+          }
           <Text style={styles.summaryText}>{'->'} Total: {calculateTotalPrice()}€</Text>
           <View style={styles.summaryButtons}>
             <TouchableOpacity style={[styles.button, styles.acceptButton]} onPress={handleAccept}>

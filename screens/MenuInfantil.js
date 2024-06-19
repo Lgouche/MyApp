@@ -72,42 +72,42 @@ export default function MenuInfantil({ navigation, resumenes, setResumenes }) {
   };
 
   return (
-    <ScrollView contentContainerStyle={stylesMenuInfantil.container}>
-      <Text style={stylesMenuInfantil.sectionTitle}>Menú Infantil</Text>
+    <ScrollView contentContainerStyle={styles.container}>
+      <Text style={styles.sectionTitle}>Menú Infantil</Text>
       {!selectedOpcion1 ? (
         <>
-          <Text style={stylesMenuInfantil.sectionTitle}>Selecciona una opción:</Text>
+          <Text style={styles.sectionTitle}>Selecciona una opción:</Text>
           {Object.entries(menuData.menuInfantil.opcion1).map(([nombre, opcion], index) => (
-            <TouchableOpacity key={index} style={stylesMenuInfantil.button} onPress={() => handleOpcion1Select({ nombre, ...opcion })}>
-              <Text style={stylesMenuInfantil.buttonText}>{`${nombre} - ${opcion.precio}`}</Text>
+            <TouchableOpacity key={index} style={styles.button} onPress={() => handleOpcion1Select({ nombre, ...opcion })}>
+              <Text style={styles.buttonText}>{`${nombre}`}</Text>
             </TouchableOpacity>
           ))}
         </>
       ) : !selectedOpcion2 ? (
         <>
-          <Text style={stylesMenuInfantil.sectionTitle}>Selecciona una opción:</Text>
+          <Text style={styles.sectionTitle}>Selecciona una opción:</Text>
           {Object.entries(menuData.menuInfantil.opcion2).map(([nombre, opcion], index) => (
-            <TouchableOpacity key={index} style={stylesMenuInfantil.button} onPress={() => handleOpcion2Select(nombre)}>
-              <Text style={stylesMenuInfantil.buttonText}>{`${nombre} - ${opcion.precio}`}</Text>
+            <TouchableOpacity key={index} style={styles.button} onPress={() => handleOpcion2Select(nombre)}>
+              <Text style={styles.buttonText}>{`${nombre} `}</Text>
             </TouchableOpacity>
           ))}
         </>
       ) : isSummaryVisible ? (
-        <View style={stylesMenuInfantil.summary}>
-          <Text style={stylesMenuInfantil.sectionTitle}>Resumen de tu Menú Infantil:</Text>
-          <Text style={stylesMenuInfantil.summaryText}>{'->'} Opción 1: </Text>
-          <Text style={stylesMenuInfantil.baseText}>{'-'} {selectedOpcion1.nombre}</Text>
-          <Text style={stylesMenuInfantil.summaryText}>{'->'} Opción 2: </Text>
-          <Text style={stylesMenuInfantil.baseText}>{'-'} {selectedOpcion2 === 'bebida' ? `Bebida: ${selectedBebida}` : `Postre: ${selectedPostre.nombre}`}</Text>
-          <Text style={stylesMenuInfantil.summaryText}>{'->'} Total: {calculateTotalPrice()}€</Text>
-          <View style={stylesMenuInfantil.summaryButtons}>
-            <TouchableOpacity style={[stylesMenuInfantil.button, stylesMenuInfantil.acceptButton]} onPress={handleAccept}>
+        <View style={styles.summary}>
+          <Text style={styles.sectionTitle}>Resumen de tu Menú Infantil:</Text>
+          <Text style={styles.summaryText}>{'->'} Opción 1: </Text>
+          <Text style={styles.baseText}>{'-'} {selectedOpcion1.nombre}</Text>
+          <Text style={styles.summaryText}>{'->'} Opción 2: </Text>
+          <Text style={styles.baseText}>{'-'} {selectedOpcion2 === 'bebida' ? `Bebida: ${selectedBebida}` : `Postre: ${selectedPostre.nombre}`}</Text>
+          <Text style={styles.summaryText}>{'->'} Total: {calculateTotalPrice()}€</Text>
+          <View style={styles.summaryButtons}>
+            <TouchableOpacity style={[styles.button, styles.acceptButton]} onPress={handleAccept}>
               <MaterialIcons name="check" size={24} color="white" />
-              <Text style={stylesMenuInfantil.buttonText}>Aceptar</Text>
+              <Text style={styles.buttonText}>Aceptar</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[stylesMenuInfantil.button, stylesMenuInfantil.cancelButton]} onPress={handleCancel}>
+            <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={handleCancel}>
               <MaterialIcons name="cancel" size={24} color="white" />
-              <Text style={stylesMenuInfantil.buttonText}>Cancelar</Text>
+              <Text style={styles.buttonText}>Cancelar</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -119,20 +119,20 @@ export default function MenuInfantil({ navigation, resumenes, setResumenes }) {
         transparent={true}
         onRequestClose={() => setIsBebidaModalVisible(false)}
       >
-        <View style={stylesMenuInfantil.modalContainer}>
-          <View style={stylesMenuInfantil.modalContent}>
-            <Text style={stylesMenuInfantil.sectionTitle}>Selecciona una Bebida:</Text>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.sectionTitle}>Selecciona una Bebida:</Text>
             {menuData.bebidas.map((bebida, index) => (
               <TouchableOpacity
                 key={index}
-                style={[stylesMenuInfantil.button, selectedBebida === bebida.nombre && stylesMenuInfantil.selectedButton]}
+                style={[styles.button, selectedBebida === bebida.nombre && styles.selectedButton]}
                 onPress={() => handleBebidaSelect(bebida.nombre)}
               >
-                <Text style={stylesMenuInfantil.buttonText}>{bebida.nombre}</Text>
+                <Text style={styles.buttonText}>{bebida.nombre}</Text>
               </TouchableOpacity>
             ))}
-            <TouchableOpacity style={[stylesMenuInfantil.button, stylesMenuInfantil.cancelButton]} onPress={() => setIsBebidaModalVisible(false)}>
-              <Text style={stylesMenuInfantil.buttonText}>Cancelar</Text>
+            <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={() => setIsBebidaModalVisible(false)}>
+              <Text style={styles.buttonText}>Cancelar</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -144,20 +144,20 @@ export default function MenuInfantil({ navigation, resumenes, setResumenes }) {
         transparent={true}
         onRequestClose={() => setIsPostreModalVisible(false)}
       >
-        <View style={stylesMenuInfantil.modalContainer}>
-          <View style={stylesMenuInfantil.modalContent}>
-            <Text style={stylesMenuInfantil.sectionTitle}>Selecciona un Postre:</Text>
-            {Object.entries(menuData.postres).map(([nombre, postre], index) => (
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.sectionTitle}>Selecciona un Postre:</Text>
+            {Object.entries(menuData.postresMenuInfantil).map(([nombre, postre], index) => (
               <TouchableOpacity
                 key={index}
-                style={[stylesMenuInfantil.button, selectedPostre?.nombre === nombre && stylesMenuInfantil.selectedButton]}
+                style={[styles.button, selectedPostre?.nombre === nombre && styles.selectedButton]}
                 onPress={() => handlePostreSelect({ nombre, ...postre })}
               >
-                <Text style={stylesMenuInfantil.buttonText}>{`${nombre} - ${postre.precio}`}</Text>
+                <Text style={styles.buttonText}>{`${nombre}`}</Text>
               </TouchableOpacity>
             ))}
-            <TouchableOpacity style={[stylesMenuInfantil.button, stylesMenuInfantil.cancelButton]} onPress={() => setIsPostreModalVisible(false)}>
-              <Text style={stylesMenuInfantil.buttonText}>Cancelar</Text>
+            <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={() => setIsPostreModalVisible(false)}>
+              <Text style={styles.buttonText}>Cancelar</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -166,78 +166,4 @@ export default function MenuInfantil({ navigation, resumenes, setResumenes }) {
   );
 }
 
-const stylesMenuInfantil = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-    overflow: "hidden",
-    backgroundColor: '#D57C48',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 20,
-  },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#fff',
-    marginVertical: 10,
-  },
-  summaryText: {
-    color: '#fff',
-    fontSize: 18,
-    marginVertical: 5,
-    alignSelf: 'flex-start',
-  },
-  baseText: {
-    color: '#fff',
-    fontSize: 16,
-    marginVertical: 2,
-    alignSelf: 'flex-end',
-  },
-  button: {
-    backgroundColor: '#895232',
-    margin: 10,
-    padding: 10,
-    width: '70%',
-    borderRadius: 25,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.8,
-    shadowRadius: 5,
-    elevation: 7,
-    alignItems: 'center',
-  },
-  acceptButton: {
-    backgroundColor: '#4CAF50',
-  },
-  cancelButton: {
-    backgroundColor: '#F44336',
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  modalContent: {
-    backgroundColor: '#D57C48',
-    padding: 20,
-    borderRadius: 10,
-    width: '80%',
-    alignItems: 'center',
-  },
-  summaryButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '80%',
-  },
-  selectedButton: {
-    borderColor: 'yellow',
-    borderWidth: 2,
-  },
-});
+

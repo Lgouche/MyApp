@@ -290,7 +290,7 @@ export default function AlGusto(props) {
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <Text style={styles.sectionTitle}>Selecciona un Gratinado:</Text>
+            <Text style={styles.sectionTitle}>Extra de gratinzacion:</Text>
             {Object.entries(menuData.alGusto.gratinadoProductos).map(([nombre, gratin], index) => (
               <TouchableOpacity
                 key={index}

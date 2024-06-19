@@ -11,7 +11,7 @@ export default function Home(props) {
           <Text style={styles.buttonText}>Al Gusto</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={() => { props.navigation.navigate('Graten'); }}>
-          <MaterialCommunityIcons name="taco" size={24} color="white" />
+          <FontAwesome5 name="star" size={24} color="white" />
           <Text style={styles.buttonText}>Graten</Text>
         </TouchableOpacity>
 
@@ -26,7 +26,7 @@ export default function Home(props) {
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.button} onPress={() => { props.navigation.navigate('Entrantes'); }}>
-          <FontAwesome5 name="star" size={24} color="white" />
+          
           <Text style={styles.buttonText}>Entrantes</Text>
         </TouchableOpacity>
 

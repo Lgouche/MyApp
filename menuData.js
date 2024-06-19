@@ -9,26 +9,34 @@ const menuData = {
       XXL: { precio: "11.50€", carnes: 4 },
     },
     carnes: [
-      "Pollo fresco/marinado",
-      "Carne picada",
-      "San Jacobo",
-      "Nuggets de pollo",
-      "Chicken Tenders",
-      "Kebab",
-      "Nuggets vegetarianos",
-      "Carne vegetariana"
+      "POLLO FRESCO/MARINADO",
+      "CARNE PICADA",
+      "SAN JACOBO",
+      "NUGGETS DE POLLO",
+      "CHICKEN TENDERS",
+      "KEBAB",
+      "NUGGETS VEGETARIANOS",
+      "CARNE VEGETARIANA"
     ],
     bases: {
       original: {
-        descripcion: "Salsa de queso + patatas"
+        descripcion: "SALSA DE QUESO + PATATAS"
       },
       tchoukTchouka: {
-        descripcion: "Salsa de queso + patatas + Tchouk-Tchouka",
+        descripcion: "SALSA DE QUESO + PATATAS + TCHOUK-TCHOUKA",
         precio_extra: "0.50€"
       },
       originalPlus: {
-        descripcion: "Salsa de queso + patatas + cebolla + tomates + lechuga",
+        descripcion: "SALSA DE QUESO + PATATAS + CEBOLLA + TOMATES + LECHUGA",
         precio_extra: "1€"
+      },
+      sinQueso: {
+        descripcion: "SIN QUESO",
+        precio_extra: "0€"
+      },
+      sinPatatas: {
+        descripcion: "SIN PATATAS",
+        precio_extra: "0€"
       }
     },
     salsas: [
@@ -65,22 +73,24 @@ const menuData = {
       XXL: { precio: "1.50€" }
     },
     gratinadoProductos:{
-      becon:{precio:"1€"},
-      quesoCabra:{precio:"1€"},
-      aciutunasVerdes:{precio:"1€"},
-      aceitunasNegras:{precio:"1€"},
-      pimientos:{precio:"1€"}
+      mozzarella:{precio:"0€"},
+      becon:{precio:"0.50€"},
+      quesoCabra:{precio:"0.50€"},
+      aciutunasVerdes:{precio:"0.50€"},
+      aceitunasNegras:{precio:"0.50€"},
+      pimientos:{precio:"0.5€"},
+      
     }
   },
   
   menus: {
     normal: {
       precio: "2€",
-      descripcion: "Patatas + bebida"
+      descripcion: "PATATAS + BEBIDA"
     },
     grande: {
       precio: "2.50€",
-      descripcion: "Bebida + patatas"
+      descripcion: "BEBIDA + PATATAS"
     }
   },
   bebidas: [
@@ -88,80 +98,84 @@ const menuData = {
     { nombre: "Fanta", precio: "1.50€" },
     { nombre: "Sprite", precio: "1.50€" },
     { nombre: "Agua", precio: "1.00€" },
-    { nombre: "Cerveza", precio: "2.00€" }
+    { nombre: "Cerveza", precio: "2.00€" },
   ],
   tacosClasicos: {
     elAutentico: {
       precio: "8€",
-      descripcion: "Carne picada, pollo, salsa argelina + BBQ y cheddar"
+      descripcion: "CARNE PICADA, POLLO, SALSA ARGELINA + BBQ Y CHEDDAR"
     },
     elLegendario: {
       precio: "8€",
-      descripcion: "San Jacobo, carne picada, salsa Magic Union y cebolla frita"
+      descripcion: "SAN JACOBO, CARNE PICADA, SALSA MAGIC UNION Y CEBOLLA FRITA"
     },
     med: {
       precio: "8€",
-      descripcion: "Carne picada, tenders, salsa andaluza, champiñon y aceitunas verdes"
+      descripcion: "CARNE PICADA, TENDERS, SALSA ANDALUZA, CAMPIÑON Y ACEITUNAS VERDES"
     },
     lOriental: {
       precio: "8€",
-      descripcion: "Pollo, kebab, salsa marroquí, pimientos y aceitunas negras"
+      descripcion: "POLLO, KEBAB, SALSA MARROQUÍ, PIMIENTOS Y ACEITUNAS NEGRAS"
     }
   },
   tacosGolden: {
     elChef: {
       precio: "9€",
-      descripcion: "Tenders, carne picada, salsa andaluza y tiras de bacon"
+      descripcion: "TENDERS, CARNE PICADA, SALSA ANDALUZA Y TIRAS DE BACON"
     },
     tresQuesos: {
       precio: "9€",
-      descripcion: "Carne picada x2 y los tres imprescindibles: Cheddar, Gouda y Emmental"
+      descripcion: "CARNE PICADA X2 Y LOS TRES IMPRESCINDIBLES: CHEDDAR, GOUDA Y EMMENTAL"
     },
     tacBac: {
       precio: "9€",
-      descripcion: "Carne kebab x2, salsa Biggy, vaca que ríe y golden queso"
+      descripcion: "CARNE KEBAB X2, SALSA BIGGY, VACA QUE RÍE Y GOLDEN QUESO"
     },
     piroAbo: {
       precio: "9€",
-      descripcion: "San Jacobo, nuggets, salsa Pili Pili y tiras de bacon"
+      descripcion: "SAN JACOBO, NUGGETS, SALSA PILI PILI Y TIRAS DE BACON"
     },
     tacostar: {
       precio: "11.50€",
-      descripcion: "San Jacobo, tenders, kebab de pollo, salsa argelina, tiras de bacon y mozzarella"
+      descripcion: "SAN JACOBO, TENDERS, KEBAB DE POLLO, SALSA ARGELINA, TIRAS DE BACON Y MOZZARELLA"
     }
   },
   menuInfantil:{
     opcion1:{
-      miniTaco:{precio:"0€"},
-      nuggets:{precio:"0€"}
+      miniTaco:{precio:"5€"},
+      nuggets:{precio:"5€"}
     },
     opcion2:{
       postre:{precio:"5€"},
-      bebida:{precio:"5€"}
+      bebida:{precio:"0€"}
     }
   },
   postres:{
     tartaDeQueso:{precio:"2€"},
     tartaDeChocolate:{precio:"2€"},
-    polim:{precio:"2€"},
-    tobletone:{precio:"2€"},
+    daim:{precio:"2€"},
+    toblerone:{precio:"2€"},
+  },
+  postresMenuInfantil:{
+    heladoChocolate:{precio:"0€"},
+    heladoVainilla:{precio:"0€"},
   },
   vegano:{
     elVeggie:{
       precio:"8.50€" ,
-      descripcion:"Carne vegeariana, zanahoria, cebolla,pimientos"
+      descripcion:"CARNE VEGETARIANA, ZANAHORIA, CEBOLLA,PIMIENTOS"
     },
     elHummer:{
       precio:"8.50€" ,
-      descripcion:"Carne vegeariana,cebolla,tomate y lechuga"
+      descripcion:"CARNE VEGETARIANA,CEBOLLA,TOMATE Y LECHUGA"
     },
     specialV:{
       precio:"8.50€" ,
-      descripcion:"Carne vegeariana, pimientos, cebolla y aguacate"
+      descripcion:"CARNE VEGETARIANA, PIMIENTOS, CEBOLLA Y AGUACATE"
     },
     oTandori:{
       precio:"8.50€" ,
-      descripcion:"Carne vegeariana, tomates cherry y maiz"
+      descripcion:"CARNE VEGETARIANA, TOMATES CHERRY Y MAIZ"
     }
   },
   entrantes:{
@@ -176,31 +190,31 @@ const menuData = {
   graten:{
     montaña:{
       precio:"8€",
-      descripcion:"Patatas, pollo y tiras de bacon G. Mozarella"
+      descripcion:"PATATAS, POLLO Y TIRAS DE BACON G. MOZZARELLA"
     },
     elOslo:{
       precio:"8€",
-      descripcion:"Patatas, carme picada y salsa magic union G. Mozarella"
+      descripcion:"PATATAS, CARNE PICADA Y SALSA MAGIC UNION G. MOZZARELLA"
     },
     reclette:{
       precio:"8€",
-      descripcion:"Patatas, tiras de bacon y reclette G. Mozarella"
+      descripcion:"PATATAS, TIRAS DE BACON Y RECLETTE G. MOZZARELLA"
     },
     pimientos:{
       precio:"8€",
-      descripcion:"Patatas, tenders y pimientos G. Mozarella"
+      descripcion:"PATATAS, TENDERS Y PIMIENTOS G. MOZZARELLA"
     }
   },
   gratenAlGusto:{
     carnes: [
-      "Pollo fresco/marinado",
-      "Carne picada",
-      "San Jacobo",
-      "Nuggets de pollo",
-      "Chicken Tenders",
-      "Kebab",
-      "Nuggets vegetarianos",
-      "Carne vegetariana"
+      "POLLO FRESCO/MARINADO",
+      "CARNE PICADA",
+      "SAN JACOBO",
+      "NUGGETS DE POLLO",
+      "CHICKEN TENDERS",
+      "KEBAB",
+      "NUGGETS VEGETARIANOS",
+      "CARNE VEGETARIANA"
     ],
     extras: [
       { nombre: "Gouda", precio: "0.50€" },
