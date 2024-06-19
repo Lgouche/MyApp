@@ -119,7 +119,8 @@ export default function MenuInfantil({ navigation, resumenes, setResumenes }) {
         transparent={true}
         onRequestClose={() => setIsBebidaModalVisible(false)}
       >
-        <View style={styles.modalContainer}>
+        <ScrollView>
+          <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <Text style={styles.sectionTitle}>Selecciona una Bebida:</Text>
             {menuData.bebidas.map((bebida, index) => (
@@ -136,6 +137,8 @@ export default function MenuInfantil({ navigation, resumenes, setResumenes }) {
             </TouchableOpacity>
           </View>
         </View>
+        </ScrollView>
+        
       </Modal>
 
       <Modal

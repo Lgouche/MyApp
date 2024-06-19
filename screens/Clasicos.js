@@ -17,7 +17,9 @@ export default function Clasicos({ navigation, resumenes, setResumenes }) {
   const [isGratinModalVisible, setIsGratinModalVisible] = useState(false);
   const [selectedGratin, setSelectedGratin] = useState(null);
   const [isGratinado, setIsGratinado] = useState(false);
-
+  const getBebidasByCategory = (category) => {
+    return menuData.bebidas.filter(bebida => bebida.categoria === category);
+  };
   const handleTacoSelect = (taco) => {
     setSelectedTaco(taco);
     setIsGratinQuestionVisible(true);
@@ -29,6 +31,7 @@ export default function Clasicos({ navigation, resumenes, setResumenes }) {
       setIsGratinModalVisible(true);
     } else {
       setIsModalVisible(true);
+      setIsGratinado(false);
     }
   };
   const handleGratinSelect = (gratin) => {
@@ -176,7 +179,7 @@ export default function Clasicos({ navigation, resumenes, setResumenes }) {
         transparent={true}
         onRequestClose={() => setIsMenuModalVisible(false)}
       >
-        <View style={styles.modalContainer}>
+        <ScrollView contentContainerStyle={styles.modalScrollContainer}>
           <View style={styles.modalContent}>
             <Text style={styles.sectionTitle}>Selecciona el tamaño del menú:</Text>
             {Object.entries(menuData.menus).map(([size, details], index) => (
@@ -189,7 +192,7 @@ export default function Clasicos({ navigation, resumenes, setResumenes }) {
               </TouchableOpacity>
             ))}
             <Text style={styles.sectionTitle}>Selecciona una Bebida:</Text>
-            {menuData.bebidas.map((bebida, index) => (
+            {selectedMenuSize && getBebidasByCategory(selectedMenuSize).map((bebida, index) => (
               <TouchableOpacity
                 key={index}
                 style={[styles.button, selectedBebida === bebida.nombre && styles.selectedButton]}
@@ -205,7 +208,7 @@ export default function Clasicos({ navigation, resumenes, setResumenes }) {
               <Text style={styles.buttonText}>Cancelar</Text>
             </TouchableOpacity>
           </View>
-        </View>
+        </ScrollView>
       </Modal>
 
       <Modal

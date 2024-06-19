@@ -17,6 +17,7 @@ export default function Vegetarianos({ navigation, resumenes, setResumenes }) {
   const [isGratinModalVisible, setIsGratinModalVisible] = useState(false);
   const [selectedGratin, setSelectedGratin] = useState(null);
   const [isGratinado, setIsGratinado] = useState(false);
+  
   const handleTacoSelect = (taco) => {
     setSelectedTaco(taco);
     setIsGratinQuestionVisible(true);
@@ -29,8 +30,10 @@ export default function Vegetarianos({ navigation, resumenes, setResumenes }) {
       setIsGratinModalVisible(true);
     } else {
       setIsModalVisible(true);
+      setIsGratinado(false);
     }
   };
+  
   const handleGratinSelect = (gratin) => {
     setSelectedGratin(gratin);
     setIsGratinModalVisible(false);
@@ -104,6 +107,10 @@ export default function Vegetarianos({ navigation, resumenes, setResumenes }) {
     setIsGratinado(false);
   };
 
+  const getBebidasByCategory = (category) => {
+    return menuData.bebidas.filter(bebida => bebida.categoria === category);
+  };
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Modal
@@ -175,7 +182,7 @@ export default function Vegetarianos({ navigation, resumenes, setResumenes }) {
         transparent={true}
         onRequestClose={() => setIsMenuModalVisible(false)}
       >
-        <View style={styles.modalContainer}>
+        <ScrollView contentContainerStyle={styles.modalScrollContainer}>
           <View style={styles.modalContent}>
             <Text style={styles.sectionTitle}>Selecciona el tamaño del menú:</Text>
             {Object.entries(menuData.menus).map(([size, details], index) => (
@@ -188,7 +195,7 @@ export default function Vegetarianos({ navigation, resumenes, setResumenes }) {
               </TouchableOpacity>
             ))}
             <Text style={styles.sectionTitle}>Selecciona una Bebida:</Text>
-            {menuData.bebidas.map((bebida, index) => (
+            {selectedMenuSize && getBebidasByCategory(selectedMenuSize).map((bebida, index) => (
               <TouchableOpacity
                 key={index}
                 style={[styles.button, selectedBebida === bebida.nombre && styles.selectedButton]}
@@ -204,7 +211,7 @@ export default function Vegetarianos({ navigation, resumenes, setResumenes }) {
               <Text style={styles.buttonText}>Cancelar</Text>
             </TouchableOpacity>
           </View>
-        </View>
+        </ScrollView>
       </Modal>
 
       <Modal
