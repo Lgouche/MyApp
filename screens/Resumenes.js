@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Modal, TextInput, Alert } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import { db } from '../credenciales';
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import * as FileSystem from 'expo-file-system';
+import RNPrint from 'react-native-print';
+import { PDFDocument, PDFPage } from 'react-native-pdf-lib';
 
 export default function Resumenes({ resumenes = [], setResumenes }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -12,7 +12,6 @@ export default function Resumenes({ resumenes = [], setResumenes }) {
   const [isTableModalVisible, setIsTableModalVisible] = useState(false);
   const [tableNumber, setTableNumber] = useState('');
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-
 
   useEffect(() => {
     const total = resumenes.reduce((acc, resumen) => acc + parseFloat(resumen.Precio), 0);
@@ -47,7 +46,6 @@ export default function Resumenes({ resumenes = [], setResumenes }) {
   };
 
   const handleTableModalAccept = async () => {
-
     setIsButtonDisabled(true);
     try {
       if (!tableNumber) {
@@ -55,35 +53,7 @@ export default function Resumenes({ resumenes = [], setResumenes }) {
         return;
       }
 
-      const newOrder = {
-        tableNumber,
-        orderDetails: resumenes,
-        totalPrice,
-        timestamp: serverTimestamp()
-      };
-
-      await addDoc(collection(db, 'orders'), newOrder);
-
-      // Generate .txt file with order details
-      const orderDetailsText = `Número de mesa: ${tableNumber}\nDetalles del pedido:\n` +
-        resumenes.map((resumen, index) => (
-          `Pedido ${index + 1}:\n` +
-          `Tipo: ${resumen.Tipo}\n` +
-          (resumen.Talla ? `Talla: ${resumen.Talla}\n` : '') +
-          (resumen.Carnes ? `Carnes: ${resumen.Carnes.join(', ')}\n` : '') +
-          (resumen.Base ? `Base: ${resumen.Base}\n` : '') +
-          (resumen.Salsas ? `Salsas: ${resumen.Salsas.join(', ')}\n` : '') +
-          (resumen.Extra ? `Extra: ${resumen.Extra}\n` : '') +
-          (resumen.Gratin ? `Gratinado: ${resumen.Gratin}\n` : '') +
-          (resumen.Nombre ? `Nombre: ${resumen.Nombre}\n` : '') +
-          (resumen.Descripcion ? `Descripción: ${resumen.Descripcion}\n` : '') +
-          (resumen.Menu ? `Menú - Tamaño: ${resumen.Menu.Tamaño}, Bebida: ${resumen.Menu.Bebida}\n` : '') +
-          `Precio: ${resumen.Precio}€\n\n`
-        )).join('') +
-        `Precio total: ${totalPrice}€\n`;
-
-      const fileUri = FileSystem.documentDirectory + 'order_summary.txt';
-      await FileSystem.writeAsStringAsync(fileUri, orderDetailsText);
+      
 
       console.log('Order confirmed for table number:', tableNumber);
       console.log('Order details:', resumenes);
@@ -95,12 +65,11 @@ export default function Resumenes({ resumenes = [], setResumenes }) {
       // Clear all summaries
       setResumenes([]);
     } catch (error) {
-      console.error('Error saving order to Firebase:', error);
-      Alert.alert('Error', 'Hubo un problema al guardar el pedido');
-    } finally{
+      console.error('Error generating PDF:', error);
+      Alert.alert('Error', 'Hubo un problema al generar el PDF');
+    } finally {
       setIsButtonDisabled(false);
     }
-    navigation.navigate('Home');
   };
 
   const handleTableModalCancel = () => {
@@ -225,7 +194,7 @@ export default function Resumenes({ resumenes = [], setResumenes }) {
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <Text style={styles.sectionTitle}>Seleccione una opcion</Text>
+            <Text style={styles.sectionTitle}>Seleccione una opción</Text>
             <TouchableOpacity style={[styles.button, styles.llevarButton]} >
               <Text style={styles.buttonText}>TOMAR</Text>
             </TouchableOpacity>

@@ -38,6 +38,10 @@ const menuData = {
       sinPatatas: {
         descripcion: "SIN PATATAS",
         precio_extra: "0€"
+      },
+      sinSalsa: {
+        descripcion: "SIN SALSA",
+        precio_extra: "0€"
       }
     },
     salsas: [
@@ -52,7 +56,8 @@ const menuData = {
       "Samurai",
       "Pili Pili",
       "Americana",
-      "Salsa Kebab"
+      "Salsa Kebab",
+      "SIN SALSA"
     ],
     extras: [
       { nombre: "Gouda", precio: "0.50€" },

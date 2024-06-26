@@ -203,6 +203,7 @@ export default function AlGusto(props) {
       >
         <ScrollView contentContainerStyle={styles.modalScrollContainer}>
           <View style={styles.modalContainer}>
+
             <View style={styles.modalContent}>
               <Text style={styles.sectionTitle}>Selecciona el tamaño del menú:</Text>
               {Object.entries(menuData.menus).map(([size, details], index) => (
@@ -215,24 +216,15 @@ export default function AlGusto(props) {
                 </TouchableOpacity>
               ))}
               <Text style={styles.sectionTitle}>Selecciona una Bebida:</Text>
-              {expandedSection === 'salsas' && (
-                <>
-                  <Text style={styles.sectionTitle}>Selecciona 2 Salsas:</Text>
-                  {menuData.alGusto.salsas.map((salsa, index) => (
-                    <TouchableOpacity
-                      key={index}
-                      style={[styles.button, selectedSalsas.filter(s => s === salsa).length > 0 && styles.selectedButton]}
-                      onPress={() => handleSalsaSelect(salsa)}
-                    >
-                      <Text style={styles.buttonText}>{salsa} ({selectedSalsas.filter(s => s === salsa).length})</Text>
-                    </TouchableOpacity>
-                  ))}
-                  {selectedSalsas.length < 2 && (
-                    <Text style={styles.warningText}>Por favor, selecciona 2 salsas.</Text>
-                  )}
-                </>
-              )}
-
+              {selectedMenuSize && getBebidasByCategory(selectedMenuSize).map((bebida, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={[styles.button, selectedBebida === bebida.nombre && styles.selectedButton]}
+                  onPress={() => handleBebidaSelect(bebida.nombre)}
+                >
+                  <Text style={styles.buttonText}>{bebida.nombre}</Text>
+                </TouchableOpacity>
+              ))}
               <TouchableOpacity style={[styles.button, styles.acceptButton]} onPress={handleModalAccept}>
                 <Text style={styles.buttonText}>Aceptar</Text>
               </TouchableOpacity>
