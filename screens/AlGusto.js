@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Modal } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, LayoutAnimation, Modal, Button } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import menuData from '../menuData';
 import styles from "../src/styles";
 
+const sections = ['tallas', 'carnes', 'bases', 'salsas', 'menu'];
 export default function AlGusto(props) {
   const [expandedSection, setExpandedSection] = useState('tallas');
   const [selectedTalla, setSelectedTalla] = useState(null);
@@ -22,9 +23,32 @@ export default function AlGusto(props) {
   const [isGratinQuestionVisible, setIsGratinQuestionVisible] = useState(false);
   const [isGratinModalVisible, setIsGratinModalVisible] = useState(false);
   const [isWarningModalVisible, setIsWarningModalVisible] = useState(false);
+  const [isGratinado, setIsGratinado] = useState(false);
+  const activeIndex = sections.indexOf(expandedSection);
+
+
+  const handleSectionChange = (section) => {
+    //LayoutAnimation.easeInEaseOut();
+    setExpandedSection(section);
+  };
+
+  const handleNextSection = () => {
+    if (activeIndex < sections.length - 1) {
+      handleSectionChange(sections[activeIndex + 1]);
+    }
+  };
+
+  const handlePrevSection = () => {
+    if (activeIndex > 0) {
+      handleSectionChange(sections[activeIndex - 1]);
+    }
+  };
+
+
+
   const handleTallaSelect = (nombre) => {
     setSelectedTalla(nombre);
-    setExpandedSection('carnes');
+    handleNextSection();
   };
 
   const handleCarnesSelect = (carne) => {
@@ -33,21 +57,24 @@ export default function AlGusto(props) {
 
     if (updatedCarnes.length >= maxCarnes) {
       setSelectedCarnes(updatedCarnes);
-      setExpandedSection('bases');
+      handleNextSection();
     } else {
       setSelectedCarnes(updatedCarnes);
     }
   };
+  const handleClearCarnes = () => {
+    setSelectedCarnes([]);
+  };
 
   const handleBaseSelect = (nombre) => {
     setSelectedBase(nombre);
-    setExpandedSection('salsas');
+    handleNextSection();
   };
 
   const handleSalsaSelect = (salsa) => {
     let updatedSalsas = [...selectedSalsas];
     const salsaCount = updatedSalsas.filter(s => s === salsa).length;
-  
+
     if (salsaCount > 0) {
       if (updatedSalsas.length < 2 || salsaCount < 2) {
         updatedSalsas.push(salsa);
@@ -59,12 +86,17 @@ export default function AlGusto(props) {
     } else if (updatedSalsas.length < 2) {
       updatedSalsas.push(salsa);
     }
-  
+
     setSelectedSalsas(updatedSalsas);
     if (updatedSalsas.length === 2) {
       setIsExtraQuestionVisible(true);
     }
   };
+  const handleClearSalsas = () => {
+    setSelectedSalsas([]);
+  };
+
+
   const handleExtraOptionSelect = (option) => {
     setIsExtraQuestionVisible(false);
     if (option === 'yes') {
@@ -86,7 +118,7 @@ export default function AlGusto(props) {
       setIsGratinModalVisible(true);
       setIsGratinado(true);
     } else {
-      setExpandedSection('menu');
+      handleNextSection();
       setIsGratinado(false);
     }
   };
@@ -94,7 +126,7 @@ export default function AlGusto(props) {
   const handleGratinSelect = (gratin) => {
     setSelectedGratin(gratin);
     setIsGratinModalVisible(false);
-    setExpandedSection('menu');
+    handleNextSection();
   };
 
   const handleMenuToggle = () => {
@@ -137,9 +169,9 @@ export default function AlGusto(props) {
     const gratinPrice = selectedGratin ? parseFloat(menuData.alGusto.gratinar[selectedTalla].precio.replace('€', '')) : 0;
     const gratinadoPrice = selectedGratin ? parseFloat(selectedGratin.precio.replace('€', '')) : 0;
 
-    console.log(tallaPrice + " " + basePrice + " " + menuPrice + " " + extraPrice + " " + gratinPrice + " " + gratinadoPrice);
+    //console.log(tallaPrice + " " + basePrice + " " + menuPrice + " " + extraPrice + " " + gratinPrice + " " + gratinadoPrice);
     return tallaPrice + basePrice + menuPrice + extraPrice + gratinPrice + gratinadoPrice;
-    setSelectedGratin
+
 
   };
 
@@ -345,6 +377,17 @@ export default function AlGusto(props) {
           </View>
         </View>
       </Modal>
+      <View style={styles.statusContainer}>
+        <View style={styles.line}>
+          <View style={[styles.activeLine, { marginLeft: `${(activeIndex / (sections.length - 1)) * 100}%` }]} />
+        </View>
+        {sections.map((section, index) => (
+          <View style={styles.dot} key={section}>
+            <View style={[index <= activeIndex ? { height: '90%', width: '90%' } : { height: '40%', width: '40%' }, { backgroundColor: '#564', borderRadius: 10 }]} />
+          </View>
+        ))}
+      </View>
+
 
       {!isSummary ? (
         <>
@@ -371,6 +414,9 @@ export default function AlGusto(props) {
                   <Text style={styles.buttonText}>{carne} ({selectedCarnes.filter(c => c === carne).length})</Text>
                 </TouchableOpacity>
               ))}
+              <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={handleClearCarnes}>
+                <Text style={styles.buttonText}>Borrar Carnes</Text>
+              </TouchableOpacity>
             </>
           )}
 
@@ -402,9 +448,9 @@ export default function AlGusto(props) {
                   </TouchableOpacity>
                 );
               })}
-              {selectedSalsas.length < 2 && (
-                <Text style={styles.warningText}>Por favor, selecciona 2 salsas.</Text>
-              )}
+              <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={handleClearSalsas}>
+                <Text style={styles.buttonText}>Borrar Salsas</Text>
+              </TouchableOpacity>
             </>
           )}
 
@@ -419,6 +465,9 @@ export default function AlGusto(props) {
               </TouchableOpacity>
             </>
           )}
+          <View style={styles.btns}>
+            <Button title='Anterior' onPress={handlePrevSection} disabled={isSummary} visible={!isSummary} />
+          </View>
         </>
       ) : (
         <View style={styles.summary}>
@@ -468,6 +517,8 @@ export default function AlGusto(props) {
           </View>
         </View>
       )}
+
+
     </ScrollView>
   );
 }

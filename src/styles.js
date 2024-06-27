@@ -291,6 +291,37 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  statusContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      width: '80%',
+      height: 70,
+      justifyContent: 'space-between',
+      marginBottom: 20,
+  },
+  dot: {
+      height: 15,
+      width: 15,
+      borderRadius: 10,
+      backgroundColor: '#ccc',
+      overflow: 'hidden',
+      alignItems: 'center',
+      justifyContent: 'center'
+  },
+  line: {
+      height: 5,
+      width: '100%',
+      backgroundColor: '#ccc',
+      position: 'absolute',
+      borderRadius: 5,
+      overflow: 'hidden'
+  },
+  activeLine: {
+      height: '100%',
+      width: '100%',
+      backgroundColor: '#444',
+      borderRadius: 5
+  },
 });
 
 export default styles;
