@@ -119,11 +119,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   input: {
-    backgroundColor: '#fff',
+    backgroundColor: 'rgba(255, 255, 255, 0.4)',
     padding: 10,
     borderRadius: 10,
-    width: '100%',
+    width: '80%',
     marginVertical: 10,
+    marginStart:20,
     color: '#000',
   },
   button: {
@@ -138,6 +139,9 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     elevation: 7,
     alignItems: 'center',
+  },
+  buttonMini:{
+    width: '30%'
   },
   acceptButton: {
     backgroundColor: '#4CAF50',
@@ -197,6 +201,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
+  },
+  bebidaButtons: {
+    flexDirection: 'row',
+    marginTop: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    position:'relative'
   },
   badge: {
     backgroundColor: 'red',

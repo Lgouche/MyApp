@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Modal, TextInput, Alert } from 'react-native';
+import { Text, View, ScrollView, TouchableOpacity, Modal, TextInput, Alert, LayoutAnimation, Platform, UIManager } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import styles from "../src/styles";
 
 import * as FileSystem from 'expo-file-system';
 import RNPrint from 'react-native-print';
 import { PDFDocument, PDFPage } from 'react-native-pdf-lib';
+
+
 
 export default function Resumenes({ resumenes = [], setResumenes }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -54,21 +56,14 @@ export default function Resumenes({ resumenes = [], setResumenes }) {
         Alert.alert('Error', 'Introduce el número de mesa');
         return;
       }
-
-      
-
       console.log('Order confirmed for table number:', tableNumber);
       console.log('Order details:', resumenes);
-
-      // Reset the table number and close the modal
       setTableNumber('');
       setIsTableModalVisible(false);
-
-      // Clear all summaries
       setResumenes([]);
     } catch (error) {
       console.error('Error generating PDF:', error);
-      Alert.alert('Error', 'Hubo un problema al generar el PDF');
+      Alert.alert('Fallo catastrofico en algun lado, a buscar');
     } finally {
       setIsButtonDisabled(false);
     }
@@ -86,79 +81,7 @@ export default function Resumenes({ resumenes = [], setResumenes }) {
       ) : (
         <>
           {resumenes.map((resumen, index) => (
-            <View key={index} style={styles.summary}>
-              <TouchableOpacity
-                style={styles.deleteButton}
-                onPress={() => handleDeletePress(index)}
-              >
-                <MaterialIcons name="close" size={24} color="white" />
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.duplicateButton}
-                onPress={() => handleDuplicatePress(index)}
-              >
-                <MaterialIcons name="add" size={24} color="white" />
-              </TouchableOpacity>
-              {resumen.Tipo === 'Al Gusto' ? (
-                <>
-                  <Text style={styles.textTitleTipe}>Al Gusto</Text>
-                  <Text style={styles.summaryText}>{'->'} Talla: </Text>
-                  <Text style={styles.baseText}>{'-'} {resumen.Talla}</Text>
-                  <Text style={styles.summaryText}>{'->'} Carnes:</Text>
-                  {resumen.Carnes && resumen.Carnes.map((carne, i) => (
-                    <Text key={i} style={styles.carnesText}>{'-'} {carne}</Text>
-                  ))}
-                  <Text style={styles.summaryText}>{'->'} Base:</Text>
-                  <Text style={styles.baseText}>{'-'} {resumen.Base}</Text>
-                  <Text style={styles.summaryText}>{'->'} Salsas:</Text>
-                  {resumen.Salsas && resumen.Salsas.map((salsa, i) => (
-                    <Text key={i} style={styles.baseText}>{'-'} {salsa}</Text>
-                  ))}
-                  {resumen.Extra && (
-                    <>
-                      <Text style={styles.summaryText}>{'->'} Extra:</Text>
-                      <Text style={styles.baseText}>{'-'} {resumen.Extra}</Text>
-                    </>
-                  )}
-                  {resumen.Gratin && (
-                    <>
-                      <Text style={styles.summaryText}>{'->'} Gratinado:</Text>
-                      <Text style={styles.baseText}>{'-'} {resumen.Gratin}</Text>
-                    </>
-                  )}
-                </>
-              ) : resumen.Tipo === 'Bebida' ? (
-                <>
-                  <Text style={styles.textTitleTipe}>Bebida</Text>
-                  <Text style={styles.summaryText}>{'->'} Nombre: </Text>
-                  <Text style={styles.baseText}>{'-'} {resumen.Nombre}</Text>
-                </>
-              ) : resumen.Tipo === 'Menu Infantil' ? (
-                <>
-                  <Text style={styles.textTitleTipe}>Menú Infantil</Text>
-                  <Text style={styles.summaryText}>{'->'} Opción 1: </Text>
-                  <Text style={styles.baseText}>{'-'} {resumen.Opcion1}</Text>
-                  <Text style={styles.summaryText}>{'->'} Opción 2: </Text>
-                  <Text style={styles.baseText}>{'-'} {resumen.Opcion2}</Text>
-                </>
-              ) : (
-                <>
-                  <Text style={styles.textTitleTipe}>{resumen.Tipo}</Text>
-                  <Text style={styles.summaryText}>{'->'} Nombre: </Text>
-                  <Text style={styles.baseText}>{'-'} {resumen.Nombre}</Text>
-                  <Text style={styles.summaryText}>{'->'} Descripción: </Text>
-                  <Text style={styles.baseText}>{'-'} {resumen.Descripcion}</Text>
-                </>
-              )}
-              {resumen.Menu && (
-                <>
-                  <Text style={styles.summaryText}>{'->'} Menú:</Text>
-                  <Text style={styles.baseText}>{'-'} Tamaño: {resumen.Menu.Tamaño}</Text>
-                  <Text style={styles.baseText}>{'-'} Bebida: {resumen.Menu.Bebida}</Text>
-                </>
-              )}
-              <Text style={styles.summaryText}>{'->'} Precio: {resumen.Precio}€</Text>
-            </View>
+            <CollapsibleItem key={index} resumen={resumen} index={index} handleDeletePress={handleDeletePress} handleDuplicatePress={handleDuplicatePress} />
           ))}
           <View style={styles.totalContainer}>
             <TouchableOpacity style={styles.confirmButton} onPress={handleConfirmAll}>
@@ -197,10 +120,10 @@ export default function Resumenes({ resumenes = [], setResumenes }) {
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <Text style={styles.sectionTitle}>Seleccione una opción</Text>
-            <TouchableOpacity style={[styles.button, styles.llevarButton]} >
+            <TouchableOpacity style={[styles.button, styles.llevarButton]}>
               <Text style={styles.buttonText}>TOMAR</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.button, styles.tomarButton]} >
+            <TouchableOpacity style={[styles.button, styles.tomarButton]}>
               <Text style={styles.buttonText}>LLEVAR</Text>
             </TouchableOpacity>
             <Text style={styles.sectionTitle}>Introduce el número de mesa</Text>
@@ -225,3 +148,117 @@ export default function Resumenes({ resumenes = [], setResumenes }) {
   );
 }
 
+function CollapsibleItem({ resumen, index, handleDeletePress, handleDuplicatePress }) {
+  const [open, setOpen] = useState(false);
+  const onPress = () => {
+    LayoutAnimation.easeInEaseOut();
+    setOpen(!open);
+  };
+
+  return (
+    <TouchableOpacity style={styles.summary} onPress={onPress} activeOpacity={1}>
+      <View style={styles.row}>
+        <Text style={styles.textTitleTipe}>{resumen.Tipo}</Text>
+        <TouchableOpacity
+          style={styles.deleteButton}
+          onPress={() => handleDeletePress(index)}
+        >
+          <MaterialIcons name="close" size={24} color="white" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.duplicateButton}
+          onPress={() => handleDuplicatePress(index)}
+        >
+          <MaterialIcons name="add" size={24} color="white" />
+        </TouchableOpacity>
+      </View>
+      {open && (
+        <View>
+          <ResumenContent resumen={resumen} />
+        </View>
+      )}
+
+    </TouchableOpacity>
+  );
+}
+
+function ResumenContent({ resumen }) {
+  return (
+    <>
+      {resumen.Tipo === 'Al Gusto' ? (
+        <>
+          <Text style={styles.summaryText}>{'->'} Talla: </Text>
+          <Text style={styles.baseText}>{'-'} {resumen.Talla}</Text>
+          <Text style={styles.summaryText}>{'->'} Carnes:</Text>
+          {resumen.Carnes && resumen.Carnes.map((carne, i) => (
+            <Text key={i} style={styles.carnesText}>{'-'} {carne}</Text>
+          ))}
+          <Text style={styles.summaryText}>{'->'} Base:</Text>
+          <Text style={styles.baseText}>{'-'} {resumen.Base}</Text>
+          <Text style={styles.summaryText}>{'->'} Salsas:</Text>
+          {resumen.Salsas && resumen.Salsas.map((salsa, i) => (
+            <Text key={i} style={styles.baseText}>{'-'} {salsa}</Text>
+          ))}
+          {resumen.Extra && (
+            <>
+              <Text style={styles.summaryText}>{'->'} Extra:</Text>
+              <Text style={styles.baseText}>{'-'} {resumen.Extra}</Text>
+            </>
+          )}
+          {resumen.Gratin && (
+            <>
+              <Text style={styles.summaryText}>{'->'} Gratinado:</Text>
+              <Text style={styles.baseText}>{'-'} {resumen.Gratin}</Text>
+            </>
+          )}
+        </>
+      ) : resumen.Tipo === 'Bebida' ? (
+        <>
+          <Text style={styles.summaryText}>{'->'} Nombre: </Text>
+          <Text style={styles.baseText}>{'-'} {resumen.Nombre}</Text>
+        </>
+      ) : resumen.Tipo === 'Menu Infantil' ? (
+        <>
+          <Text style={styles.summaryText}>{'->'} Opción 1: </Text>
+          <Text style={styles.baseText}>{'-'} {resumen.Opcion1}</Text>
+          <Text style={styles.summaryText}>{'->'} Opción 2: </Text>
+          <Text style={styles.baseText}>{'-'} {resumen.Opcion2}</Text>
+        </>
+      ) : resumen.Tipo === 'Postres' || resumen.Tipo === 'Entrantes' ? (
+        <>
+
+          <Text style={styles.summaryText}>{'->'} Nombre: </Text>
+          <Text style={styles.baseText}>{'-'} {resumen.Nombre}</Text>
+        </>
+      ) : resumen.Tipo === 'Al Gusto Graten' ? (
+        <>
+        <Text style={styles.summaryText}>{'->'} Carne: </Text>
+        <Text style={styles.baseText}>{'-'} {resumen.Carne }</Text>
+        {resumen.Extra && (
+            <>
+              <Text style={styles.summaryText}>{'->'} Extra:</Text>
+              <Text style={styles.baseText}>{'-'} {resumen.Extra}</Text>
+            </>
+          )}
+          
+        </>
+      ) : (
+        <>
+
+          <Text style={styles.summaryText}>{'->'} Nombre: </Text>
+          <Text style={styles.baseText}>{'-'} {resumen.Nombre}</Text>
+          <Text style={styles.summaryText}>{'->'} Descripción: </Text>
+          <Text style={styles.baseText}>{'-'} {resumen.Descripcion}</Text>
+        </>
+      )}
+      {resumen.Menu && (
+        <>
+          <Text style={styles.summaryText}>{'->'} Menú:</Text>
+          <Text style={styles.baseText}>{'-'} Tamaño: {resumen.Menu.Tamaño}</Text>
+          <Text style={styles.baseText}>{'-'} Bebida: {resumen.Menu.Bebida}</Text>
+        </>
+      )}
+      <Text style={styles.summaryText}>{'->'} Precio: {resumen.Precio}€</Text>
+    </>
+  );
+}

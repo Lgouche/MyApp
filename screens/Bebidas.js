@@ -8,6 +8,7 @@ export default function Bebidas({ navigation, resumenes, setResumenes }) {
   const [selectedBebida, setSelectedBebida] = useState(null);
   const [isSummary, setIsSummary] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [tam, setTam] = useState(null);
 
   const handleBebidaSelect = (bebida) => {
     setSelectedBebida(bebida);
@@ -33,6 +34,18 @@ export default function Bebidas({ navigation, resumenes, setResumenes }) {
     setIsSummary(false);
     setIsModalVisible(false);
   };
+  const tamBebida = (tam) => {
+    if (tam == 'grande') {
+      setTam(tam);
+      console.log(tam);
+    } if (tam == 'normal') {
+      setTam(tam);
+      console.log(tam);
+    }
+  };
+  const getBebidasByCategory = (category) => {
+    return menuData.bebidas.filter(bebida => bebida.categoria === category);
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -57,12 +70,36 @@ export default function Bebidas({ navigation, resumenes, setResumenes }) {
 
       {!isSummary ? (
         <>
+          <Text style={styles.sectionTitle}>Selecciona el tamaño :</Text>
+          <View style={styles.bebidaButtons}>
+            <TouchableOpacity style={[styles.button, styles.buttonMini]}
+              onPress={() => tamBebida('normal')}
+            >
+              <Text style={styles.buttonText}>Tamaño Normal</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.button, styles.buttonMini]}
+              onPress={() => tamBebida('grande')}
+            >
+              <Text style={styles.buttonText}>Tamaño Grande</Text>
+            </TouchableOpacity>
+          </View>
+
           <Text style={styles.sectionTitle}>Selecciona una Bebida:</Text>
-          {menuData.bebidas.map((bebida, index) => (
-            <TouchableOpacity key={index} style={styles.button} onPress={() => handleBebidaSelect(bebida)}>
+          {tam && getBebidasByCategory(tam).map((bebida, index) => (
+            <TouchableOpacity
+              key={index}
+              style={[styles.button, selectedBebida === bebida.nombre && styles.selectedButton]}
+              onPress={() => handleBebidaSelect(bebida)}
+            >
               <Text style={styles.buttonText}>{`${bebida.nombre} - ${bebida.precio}`}</Text>
             </TouchableOpacity>
           ))}
+
+
+
+
+
+          
         </>
       ) : (
         <View style={styles.summary}>

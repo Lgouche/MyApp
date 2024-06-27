@@ -186,16 +186,20 @@ export default function Clasicos({ navigation, resumenes, setResumenes }) {
         <ScrollView contentContainerStyle={styles.modalScrollContainer}>
           <View style={styles.modalContent}>
             <Text style={styles.sectionTitle}>Selecciona el tamaño del menú:</Text>
-            {Object.entries(menuData.menus).map(([size, details], index) => (
+            <View style={styles.bebidaButtons} >
+              {Object.entries(menuData.menus).map(([size, details], index) => (
               <TouchableOpacity
                 key={index}
-                style={[styles.button, selectedMenuSize === size && styles.selectedButton]}
+                style={[styles.button,styles.buttonMini, selectedMenuSize === size && styles.selectedButton]}
                 onPress={() => handleMenuSizeSelect(size)}
               >
                 <Text style={styles.buttonText}>{`${size.charAt(0).toUpperCase() + size.slice(1)} - Precio: ${details.precio}`}</Text>
               </TouchableOpacity>
             ))}
+            </View>
+            
             <Text style={styles.sectionTitle}>Selecciona una Bebida:</Text>
+            
             {selectedMenuSize && getBebidasByCategory(selectedMenuSize).map((bebida, index) => (
               <TouchableOpacity
                 key={index}

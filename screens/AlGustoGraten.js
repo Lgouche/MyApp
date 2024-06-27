@@ -85,7 +85,7 @@ export default function AlGustoGraten({ navigation, resumenes, setResumenes }) {
   const handleAccept = () => {
     const nuevoResumen = {
       Tipo: 'Al Gusto Graten',
-      Carne: selectedCarne,
+      Carne: selectedCarne.nombre,
       Extra: selectedExtra ? selectedExtra.nombre : null,
       Menu: isMenu ? {
         Tamaño: selectedMenuSize,
