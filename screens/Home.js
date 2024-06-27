@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import { MaterialCommunityIcons, FontAwesome5, FontAwesome6, Entypo } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 
 export default function Home(props) {
   return (
@@ -26,7 +27,7 @@ export default function Home(props) {
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.button} onPress={() => { props.navigation.navigate('Entrantes'); }}>
-          
+          <Entypo name="bowl" size={24} color="white" />
           <Text style={styles.buttonText}>Entrantes</Text>
         </TouchableOpacity>
 
@@ -35,7 +36,7 @@ export default function Home(props) {
           <Text style={styles.buttonText}>Bebidas</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={() => { props.navigation.navigate('Vegetarianos'); }}>
-          <MaterialCommunityIcons name="food-fork-drink" size={24} color="white" />
+          <AntDesign name="heart" size={24} color="white" />
           <Text style={styles.buttonText}>Vegetarianos</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={() => { props.navigation.navigate('Postres'); }}>
@@ -43,7 +44,7 @@ export default function Home(props) {
           <Text style={styles.buttonText}>Postres</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={() => { props.navigation.navigate('MenuInfantil'); }}>
-          <MaterialCommunityIcons name="food-fork-drink" size={24} color="white" />
+        <Entypo name="cake" size={24} color="white" />
           <Text style={styles.buttonText}>M. Infantil</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={() => { props.navigation.navigate('Resumenes'); }}>

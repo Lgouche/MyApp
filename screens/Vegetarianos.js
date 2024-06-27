@@ -84,7 +84,8 @@ export default function Vegetarianos({ navigation, resumenes, setResumenes }) {
       Menu: isMenu ? {
         Tamaño: selectedMenuSize,
         Bebida: selectedBebida,
-      } : null,
+      } : null,   
+      Gratin: selectedGratin ? selectedGratin.nombre : null,
       Precio: calculateTotalPrice(),
     };
 

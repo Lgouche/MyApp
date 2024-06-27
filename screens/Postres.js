@@ -55,11 +55,6 @@ export default function Postres({ navigation, resumenes, setResumenes }) {
     const nuevoResumen = {
       Tipo: 'Postres',
       Nombre: selectedPostre.nombre,
-      Descripcion: selectedPostre.descripcion,
-      Menu: isMenu ? {
-        Tamaño: selectedMenuSize,
-        Bebida: selectedBebida,
-      } : null,
       Precio: calculateTotalPrice(),
     };
 
