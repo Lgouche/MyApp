@@ -8,6 +8,20 @@ import RNPrint from 'react-native-print';
 import { PDFDocument, PDFPage } from 'react-native-pdf-lib';
 
 
+const groupResumenes = (resumenes) => {
+  const grouped = {};
+
+  resumenes.forEach((resumen) => {
+    const key = JSON.stringify(resumen);
+    if (grouped[key]) {
+      grouped[key].count += 1;
+    } else {
+      grouped[key] = { ...resumen, count: 1 };
+    }
+  });
+
+  return Object.values(grouped);
+};
 
 export default function Resumenes({ resumenes = [], setResumenes }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -16,6 +30,8 @@ export default function Resumenes({ resumenes = [], setResumenes }) {
   const [isTableModalVisible, setIsTableModalVisible] = useState(false);
   const [tableNumber, setTableNumber] = useState('');
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [pedido, setPedido] = useState(null);
+  const [mostrarFin, setMostrarFin] = useState(false);
 
   useEffect(() => {
     const total = resumenes.reduce((acc, resumen) => acc + parseFloat(resumen.Precio), 0);
@@ -23,8 +39,14 @@ export default function Resumenes({ resumenes = [], setResumenes }) {
   }, [resumenes]);
 
   const handleDeletePress = (index) => {
-    setSelectedIndex(index);
-    setIsModalVisible(true);
+    if (resumenes.length === 1) {
+      setSelectedIndex(index);
+      setIsModalVisible(true);
+    } else {
+      const updatedResumenes = [...resumenes];
+      updatedResumenes.splice(index, 1);
+      setResumenes(updatedResumenes);
+    }
   };
 
   const handleConfirmDelete = () => {
@@ -56,7 +78,7 @@ export default function Resumenes({ resumenes = [], setResumenes }) {
         Alert.alert('Error', 'Introduce el número de mesa');
         return;
       }
-      console.log('Order confirmed for table number:', tableNumber);
+      console.log('El pedido es para ',pedido,' for table number or person:', tableNumber);
       console.log('Order details:', resumenes);
       setTableNumber('');
       setIsTableModalVisible(false);
@@ -71,16 +93,25 @@ export default function Resumenes({ resumenes = [], setResumenes }) {
 
   const handleTableModalCancel = () => {
     setIsTableModalVisible(false);
+    setMostrarFin(false);
+    setTableNumber('');
   };
+    const tipoPedido = (tipo) => {
+      setPedido(tipo);
+      setMostrarFin(true);
+
+    }
+
+  const groupedResumenes = groupResumenes(resumenes);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.sectionTitle}>Resúmenes de Pedidos</Text>
-      {resumenes.length === 0 ? (
+      {groupedResumenes.length === 0 ? (
         <Text style={styles.noSummaryText}>No hay resúmenes de pedidos.</Text>
       ) : (
         <>
-          {resumenes.map((resumen, index) => (
+          {groupedResumenes.map((resumen, index) => (
             <CollapsibleItem key={index} resumen={resumen} index={index} handleDeletePress={handleDeletePress} handleDuplicatePress={handleDuplicatePress} />
           ))}
           <View style={styles.totalContainer}>
@@ -118,30 +149,43 @@ export default function Resumenes({ resumenes = [], setResumenes }) {
         onRequestClose={handleTableModalCancel}
       >
         <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.sectionTitle}>Seleccione una opción</Text>
-            <TouchableOpacity style={[styles.button, styles.llevarButton]}>
-              <Text style={styles.buttonText}>TOMAR</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.button, styles.tomarButton]}>
-              <Text style={styles.buttonText}>LLEVAR</Text>
-            </TouchableOpacity>
-            <Text style={styles.sectionTitle}>Introduce el número de mesa</Text>
-            <TextInput
-              style={styles.input}
-              value={tableNumber}
-              onChangeText={setTableNumber}
-              keyboardType="numeric"
-              placeholder="Número de mesa"
-              placeholderTextColor="#ccc"
-            />
-            <TouchableOpacity style={[styles.button, styles.acceptButton]} onPress={handleTableModalAccept} disabled={isButtonDisabled}>
-              <Text style={styles.buttonText}>Aceptar</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={handleTableModalCancel} disabled={isButtonDisabled}>
-              <Text style={styles.buttonText}>Cancelar</Text>
-            </TouchableOpacity>
-          </View>
+          {!mostrarFin && (
+            <View style={styles.modalContent}>
+              <Text style={styles.sectionTitle}>Seleccione una opción</Text>
+              <View style={styles.bebidaButtons}>
+                <TouchableOpacity style={[styles.button, styles.llevarButton]} onPress={() => { tipoPedido('tomar') }} >
+                  <Text style={styles.buttonText}>TOMAR</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.button, styles.tomarButton]} onPress={() => { tipoPedido('llevar') }}>
+                  <Text style={styles.buttonText}>LLEVAR</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          )}
+
+          {mostrarFin && (
+            <View style={styles.modalContent}>
+              <Text style={styles.sectionTitle}>{pedido === 'llevar' ? 'Introduce un Nombre' : 'Introduce el número de mesa'}</Text>
+
+              <TextInput
+                style={styles.input}
+                value={tableNumber}
+                onChangeText={setTableNumber}
+                keyboardType={pedido === 'llevar' ? "default" : "numeric"}
+                placeholder={pedido === 'llevar' ? "Manolo, Luis, ...." : "Numero de stick"}
+                placeholderTextColor="#ccc"
+              />
+              <View style={styles.bebidaButtons}>
+                <TouchableOpacity style={[styles.button, styles.acceptButton]} onPress={handleTableModalAccept} disabled={isButtonDisabled}>
+                  <Text style={styles.buttonText}>Aceptar</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={handleTableModalCancel} disabled={isButtonDisabled}>
+                  <Text style={styles.buttonText}>Cancelar</Text>
+                </TouchableOpacity>
+              </View>
+
+            </View>
+          )}
         </View>
       </Modal>
     </ScrollView>
@@ -158,16 +202,22 @@ function CollapsibleItem({ resumen, index, handleDeletePress, handleDuplicatePre
   return (
     <TouchableOpacity style={styles.summary} onPress={onPress} activeOpacity={1}>
       <View style={styles.row}>
-        <Text style={styles.textTitleTipe}>{resumen.Tipo}</Text>
+        <Text style={styles.textTitleTipe}>{resumen.Tipo} {resumen.count > 1 ? `(x${resumen.count})` : ''}</Text>
         <TouchableOpacity
           style={styles.deleteButton}
-          onPress={() => handleDeletePress(index)}
+          onPress={(e) => {
+            e.stopPropagation();
+            handleDeletePress(index);
+          }}
         >
           <MaterialIcons name="close" size={24} color="white" />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.duplicateButton}
-          onPress={() => handleDuplicatePress(index)}
+          onPress={(e) => {
+            e.stopPropagation();
+            handleDuplicatePress(index);
+          }}
         >
           <MaterialIcons name="add" size={24} color="white" />
         </TouchableOpacity>
@@ -177,7 +227,6 @@ function CollapsibleItem({ resumen, index, handleDeletePress, handleDuplicatePre
           <ResumenContent resumen={resumen} />
         </View>
       )}
-
     </TouchableOpacity>
   );
 }
@@ -226,25 +275,22 @@ function ResumenContent({ resumen }) {
         </>
       ) : resumen.Tipo === 'Postres' || resumen.Tipo === 'Entrantes' ? (
         <>
-
           <Text style={styles.summaryText}>{'->'} Nombre: </Text>
           <Text style={styles.baseText}>{'-'} {resumen.Nombre}</Text>
         </>
       ) : resumen.Tipo === 'Al Gusto Graten' ? (
         <>
-        <Text style={styles.summaryText}>{'->'} Carne: </Text>
-        <Text style={styles.baseText}>{'-'} {resumen.Carne }</Text>
-        {resumen.Extra && (
+          <Text style={styles.summaryText}>{'->'} Carne: </Text>
+          <Text style={styles.baseText}>{'-'} {resumen.Carne}</Text>
+          {resumen.Extra && (
             <>
               <Text style={styles.summaryText}>{'->'} Extra:</Text>
               <Text style={styles.baseText}>{'-'} {resumen.Extra}</Text>
             </>
           )}
-          
         </>
       ) : (
         <>
-
           <Text style={styles.summaryText}>{'->'} Nombre: </Text>
           <Text style={styles.baseText}>{'-'} {resumen.Nombre}</Text>
           <Text style={styles.summaryText}>{'->'} Descripción: </Text>
