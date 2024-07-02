@@ -113,6 +113,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalScrollContainer: {
+    
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -334,7 +335,35 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: 'center',
     marginTop: 5,
-  }
+  }, salsasContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  salsaButton: {
+    backgroundColor: '#895232',
+    margin: 5,
+    padding: 10,
+    width: '45%', // Ancho de los botones para ajustarse en dos columnas
+    borderRadius: 25,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 5,
+    elevation: 7,
+    alignItems: 'center',
+  },
+  selectedButton: {
+    borderColor: '#fff',
+    borderWidth: 2,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
 });
 
 export default styles;

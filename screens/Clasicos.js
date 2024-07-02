@@ -242,7 +242,7 @@ export default function Clasicos({ navigation, resumenes, setResumenes }) {
           {Object.entries(menuData.tacosClasicos).map(([nombre, taco], index) => (
             <TouchableOpacity key={index} style={styles.button} onPress={() => handleTacoSelect({ nombre, ...taco })}>
               <Text style={styles.buttonText}>{`${nombre} - ${taco.precio}`}</Text>
-              <Text style={styles.buttonSubText}>{taco.descripcion}</Text>
+              
             </TouchableOpacity>
           ))}
         </>

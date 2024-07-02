@@ -275,6 +275,7 @@ export default function AlGusto(props) {
         transparent={true}
         onRequestClose={() => setIsExtraQuestionVisible(false)}
       >
+
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <Text style={styles.sectionTitle}>¿Deseas añadir un extra?</Text>
@@ -288,24 +289,27 @@ export default function AlGusto(props) {
         </View>
       </Modal>
 
+
+
       <Modal
         visible={isExtraModalVisible}
         animationType="slide"
         transparent={true}
         onRequestClose={() => setIsExtraModalVisible(false)}
       >
-        <ScrollView>
-          <View style={styles.modalContainer}>
+        <ScrollView contentContainerStyle={styles.modalScrollContainer}>
+          <View style={styles.modalContent}>
 
             <View style={styles.modalContent}>
               <Text style={styles.sectionTitle}>Selecciona un Extra:</Text>
+
               {menuData.alGusto.extras.map((extra, index) => (
                 <TouchableOpacity
                   key={index}
                   style={[styles.button, selectedExtra === extra && styles.selectedButton]}
                   onPress={() => handleExtraSelect(extra)}
                 >
-                  <Text style={styles.buttonText}>{`${extra.nombre} - Precio: ${extra.precio}`}</Text>
+                  <Text style={styles.buttonText}>{`${extra.nombre} - ${extra.precio}`}</Text>
                 </TouchableOpacity>
               ))}
               <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={() => setIsExtraModalVisible(false)}>
@@ -430,29 +434,34 @@ export default function AlGusto(props) {
                   </Text>
                 </TouchableOpacity>
               ))}
+            
+              
             </>
           )}
 
-          {expandedSection === 'salsas' && (
-            <>
-              <Text style={styles.sectionTitle}>Selecciona 2 Salsas:</Text>
-              {menuData.alGusto.salsas.map((salsa, index) => {
-                const salsaCount = selectedSalsas.filter(s => s === salsa).length;
-                return (
-                  <TouchableOpacity
-                    key={index}
-                    style={[styles.button, salsaCount > 0 && styles.selectedButton]}
-                    onPress={() => handleSalsaSelect(salsa)}
-                  >
-                    <Text style={styles.buttonText}>{salsa} ({salsaCount})</Text>
-                  </TouchableOpacity>
-                );
-              })}
-              <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={handleClearSalsas}>
-                <Text style={styles.buttonText}>Borrar Salsas</Text>
-              </TouchableOpacity>
-            </>
-          )}
+{expandedSection === 'salsas' && (
+  <>
+    <Text style={styles.sectionTitle}>Selecciona 2 Salsas:</Text>
+    <View style={styles.salsasContainer}>
+      {menuData.alGusto.salsas.map((salsa, index) => {
+        const salsaCount = selectedSalsas.filter(s => s === salsa).length;
+        return (
+          <TouchableOpacity
+            key={index}
+            style={[styles.salsaButton, salsaCount > 0 && styles.selectedButton]}
+            onPress={() => handleSalsaSelect(salsa)}
+          >
+            <Text style={styles.buttonText}>{salsa} ({salsaCount})</Text>
+          </TouchableOpacity>
+        );
+      })}
+    </View>
+    <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={handleClearSalsas}>
+      <Text style={styles.buttonText}>Borrar Salsas</Text>
+    </TouchableOpacity>
+  </>
+)}
+
 
           {expandedSection === 'menu' && (
             <>

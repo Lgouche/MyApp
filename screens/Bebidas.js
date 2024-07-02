@@ -37,10 +37,8 @@ export default function Bebidas({ navigation, resumenes, setResumenes }) {
   const tamBebida = (tam) => {
     if (tam == 'grande') {
       setTam(tam);
-      console.log(tam);
     } if (tam == 'normal') {
       setTam(tam);
-      console.log(tam);
     }
   };
   const getBebidasByCategory = (category) => {

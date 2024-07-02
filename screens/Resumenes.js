@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, ScrollView, TouchableOpacity, Modal, TextInput, Alert, LayoutAnimation, Platform, UIManager } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import styles from "../src/styles";
+import { sendData } from './components/sendData';
 
 import * as FileSystem from 'expo-file-system';
 import RNPrint from 'react-native-print';
@@ -32,6 +33,7 @@ export default function Resumenes({ resumenes = [], setResumenes }) {
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [pedido, setPedido] = useState(null);
   const [mostrarFin, setMostrarFin] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const total = resumenes.reduce((acc, resumen) => acc + parseFloat(resumen.Precio), 0);
@@ -73,21 +75,27 @@ export default function Resumenes({ resumenes = [], setResumenes }) {
 
   const handleTableModalAccept = async () => {
     setIsButtonDisabled(true);
-    try {
-      if (!tableNumber) {
+    if (!tableNumber) {
         Alert.alert('Error', 'Introduce el número de mesa');
         return;
       }
+    try {
+      sendData(resumenes,pedido,tableNumber, setLoading);
       console.log('El pedido es para ',pedido,' for table number or person:', tableNumber);
       console.log('Order details:', resumenes);
-      setTableNumber('');
-      setIsTableModalVisible(false);
-      setResumenes([]);
+      
+      
+      
     } catch (error) {
       console.error('Error generating PDF:', error);
       Alert.alert('Fallo catastrofico en algun lado, a buscar');
     } finally {
+      setTableNumber('');
+      setIsTableModalVisible(false);
+      setResumenes([]);
       setIsButtonDisabled(false);
+      
+      
     }
   };
 
